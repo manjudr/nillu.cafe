@@ -4,42 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NILLU Café | Coming Soon</title>
-  <meta name="description" content="NILLU Café, HSR Layout, Bengaluru. ನಿಲ್ಲು — Kannada for 'stop'. Good coffee, fresh juices, little joys. Opening soon.">
-  <meta name="theme-color" content="#FBF6EE">
+  <meta name="description" content="NILLU Café, HSR Layout, Bengaluru. ನಿಲ್ಲು — Kannada for 'stop'. A small room with good light, and a reason to slow down. Opening soon.">
+  <meta name="theme-color" content="#FFFFFF">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="NILLU Café | Coming Soon">
-  <meta property="og:description" content="ನಿಲ್ಲು — Kannada for 'stop'. Stop by, stay a while. HSR Layout, Bengaluru.">
+  <meta property="og:description" content="ನಿಲ್ಲು — Kannada for 'stop'. Stop by, slow down, stay a while. HSR Layout, Bengaluru.">
   <meta property="og:url" content="https://nillu.cafe/">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFFFF'/><text x='50' y='74' font-size='66' font-family='Georgia,serif' fill='%230A0A0A' text-anchor='middle'>N</text></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Inter:wght@300;400;500&family=Noto+Serif+Kannada:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+Kannada:wght@300..600&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #FBF6EE;
-      --bg-soft: #F3EADC;
-      --ink: #2B1D14;
-      --ink-soft: #7A6454;
-      --ink-faint: #A8937F;
-      --accent: #B5633A;
-      --line: #E4D7C5;
-    }
+      --bg:        #FFFFFF;
+      --ink:       #0A0A0A;
+      --ink-soft:  #5C5C5C;
+      --ink-faint: #9A9A9A;
+      --line:      #E6E6E6;
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #16100C;
-        --bg-soft: #1F1710;
-        --ink: #F4EADE;
-        --ink-soft: #B9A693;
-        --ink-faint: #8A7765;
-        --accent: #D98B5C;
-        --line: #332518;
-      }
+      --gap: clamp(10px, 2.1vh, 24px);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,36 +35,22 @@
     html { -webkit-text-size-adjust: 100%; }
 
     body {
-      min-height: 100svh;
+      height: 100svh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       background: var(--bg);
       color: var(--ink);
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 300;
       -webkit-font-smoothing: antialiased;
-      position: relative;
-      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
     }
-
-    /* soft warm glow behind the content */
-    body::before {
-      content: "";
-      position: fixed;
-      top: -30vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(900px, 130vw);
-      height: min(900px, 130vw);
-      background: radial-gradient(circle, var(--bg-soft) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    header, main, footer { position: relative; z-index: 1; }
 
     /* ---------- header ---------- */
     header {
-      padding: 34px 7% 0;
+      flex: none;
+      padding: clamp(18px, 3.4vh, 38px) 6% 0;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
@@ -86,27 +60,29 @@
     .brand {
       display: flex;
       align-items: baseline;
-      gap: 14px;
+      gap: 12px;
     }
 
-    .logo {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: 3px;
-    }
-
-    .logo-kn {
-      font-family: "Noto Serif Kannada", serif;
-      font-size: 22px;
+    .wordmark {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(19px, 2.9vh, 27px);
       font-weight: 500;
-      color: var(--accent);
+      letter-spacing: .22em;
+      text-indent: .22em;
+    }
+
+    .wordmark-kn {
+      font-family: "Noto Serif Kannada", serif;
+      font-size: clamp(15px, 2.3vh, 21px);
+      font-weight: 400;
+      color: var(--ink-faint);
       line-height: 1;
     }
 
-    .location {
-      font-size: 10px;
-      letter-spacing: 2.5px;
+    .place {
+      font-size: clamp(8px, 1.3vh, 10px);
+      font-weight: 400;
+      letter-spacing: .3em;
       color: var(--ink-faint);
       text-transform: uppercase;
       white-space: nowrap;
@@ -115,156 +91,138 @@
     /* ---------- main ---------- */
     main {
       flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 56px 24px 88px;
+      gap: var(--gap);
+      padding: var(--gap) 6%;
     }
 
     .steam {
-      height: 34px;
-      margin-bottom: 22px;
+      flex: none;
       display: flex;
-      gap: 7px;
+      gap: 6px;
       align-items: flex-end;
+      height: clamp(14px, 2.6vh, 26px);
     }
 
-    .steam span {
+    .steam i {
       display: block;
-      width: 2px;
-      height: 26px;
-      border-radius: 2px;
-      background: linear-gradient(to top, var(--accent), transparent);
-      opacity: .45;
-      animation: rise 3.4s ease-in-out infinite;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to top, var(--ink-faint), transparent);
+      animation: rise 3.6s ease-in-out infinite;
     }
 
-    .steam span:nth-child(2) { animation-delay: .5s; height: 34px; }
-    .steam span:nth-child(3) { animation-delay: 1s; }
+    .steam i:nth-child(2) { animation-delay: .6s; }
+    .steam i:nth-child(3) { animation-delay: 1.2s; }
 
     @keyframes rise {
-      0%, 100% { transform: translateY(4px) scaleY(.85); opacity: .25; }
-      50%      { transform: translateY(-4px) scaleY(1.1); opacity: .6; }
+      0%, 100% { transform: translateY(3px) scaleY(.8);  opacity: .22; }
+      50%      { transform: translateY(-3px) scaleY(1.1); opacity: .55; }
     }
 
     .eyebrow {
-      font-size: 10px;
-      letter-spacing: 4px;
+      flex: none;
+      font-size: clamp(8px, 1.3vh, 10px);
+      font-weight: 400;
+      letter-spacing: .38em;
+      text-indent: .38em;
       color: var(--ink-faint);
       text-transform: uppercase;
-      margin-bottom: 26px;
     }
 
     h1 {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: clamp(40px, 7.5vw, 78px);
+      flex: none;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(32px, 7.4vh, 74px);
       font-weight: 300;
-      letter-spacing: -2px;
-      line-height: 1.08;
-      margin-bottom: 34px;
+      letter-spacing: -.01em;
+      line-height: 1.06;
       text-wrap: balance;
     }
 
     h1 em {
       font-style: italic;
-      font-weight: 500;
-      color: var(--accent);
+      font-weight: 400;
     }
 
-    /* ---------- the name, in Kannada ---------- */
-    .meaning {
+    /* ---------- the name ---------- */
+    .name {
+      flex: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      padding: 26px 34px;
-      border: 1px solid var(--line);
-      border-radius: 2px;
-      background: color-mix(in srgb, var(--bg-soft) 45%, transparent);
-      margin-bottom: 34px;
-      max-width: 420px;
+      gap: clamp(6px, 1.1vh, 11px);
+      padding: var(--gap) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      max-width: 440px;
     }
 
-    .meaning-kn {
+    .name-kn {
       font-family: "Noto Serif Kannada", serif;
-      font-size: clamp(38px, 9vw, 54px);
-      font-weight: 500;
-      line-height: 1.25;
-      color: var(--ink);
+      font-size: clamp(26px, 5.2vh, 46px);
+      font-weight: 400;
+      line-height: 1.2;
     }
 
-    .meaning-translit {
-      font-size: 10px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-
-    .meaning-text {
-      font-size: 14px;
-      line-height: 1.75;
+    .name-text {
+      font-size: clamp(11px, 1.75vh, 14px);
+      font-weight: 300;
+      line-height: 1.7;
       color: var(--ink-soft);
-      max-width: 300px;
+      max-width: 310px;
     }
 
-    .meaning-text b {
-      font-weight: 500;
+    .name-text b {
+      font-weight: 400;
       color: var(--ink);
     }
 
     .description {
+      flex: none;
       max-width: 400px;
-      font-size: 15px;
+      font-size: clamp(12px, 1.85vh, 15px);
       font-weight: 300;
-      line-height: 2;
+      line-height: 1.95;
       color: var(--ink-soft);
-      margin-bottom: 36px;
     }
 
     .coming-soon {
-      display: inline-block;
+      flex: none;
       border: 1px solid var(--ink);
       border-radius: 100px;
-      padding: 13px 30px;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 3.5px;
+      padding: clamp(9px, 1.5vh, 14px) clamp(22px, 4vw, 34px);
+      font-size: clamp(8px, 1.3vh, 10px);
+      font-weight: 400;
+      letter-spacing: .32em;
+      text-indent: .32em;
       text-transform: uppercase;
-    }
-
-    .divider {
-      width: 40px;
-      height: 1px;
-      background: var(--line);
-      margin: 36px 0 20px;
-    }
-
-    .footer-note {
-      font-family: "Fraunces", Georgia, serif;
-      font-style: italic;
-      font-size: 15px;
-      color: var(--ink-soft);
     }
 
     /* ---------- footer ---------- */
     footer {
-      padding: 24px 7%;
+      flex: none;
+      padding: clamp(14px, 2.4vh, 24px) 6%;
       display: flex;
       justify-content: space-between;
       gap: 10px;
       border-top: 1px solid var(--line);
       color: var(--ink-faint);
-      font-size: 10px;
-      letter-spacing: 2px;
+      font-size: clamp(8px, 1.25vh, 10px);
+      font-weight: 400;
+      letter-spacing: .22em;
       text-transform: uppercase;
     }
 
     /* ---------- entrance ---------- */
     .reveal {
       opacity: 0;
-      animation: fadeUp .9s cubic-bezier(.22, 1, .36, 1) forwards;
+      animation: fadeUp 1s cubic-bezier(.22, 1, .36, 1) forwards;
     }
 
     .d1 { animation-delay: .05s; }
@@ -275,40 +233,40 @@
     .d6 { animation-delay: .70s; }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal { animation: none; opacity: 1; }
-      .steam span { animation: none; }
+      .reveal  { animation: none; opacity: 1; }
+      .steam i { animation: none; opacity: .3; }
     }
 
-    /* ---------- small screens ---------- */
+    /* ---------- narrow screens ---------- */
     @media (max-width: 620px) {
       header {
-        padding: 26px 6% 0;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
       }
 
-      .logo { font-size: 23px; }
-      .logo-kn { font-size: 20px; }
-      .location { font-size: 9px; letter-spacing: 2px; }
-
-      main { padding: 40px 22px 64px; }
-      h1 { letter-spacing: -1px; }
-
-      .meaning { padding: 22px 24px; }
-
       footer {
-        padding: 20px 6%;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 6px;
+        gap: 5px;
       }
+
+      .description br { display: none; }
+    }
+
+    /* ---------- very short viewports: trim, then allow scroll ---------- */
+    @media (max-height: 600px) {
+      .steam, .eyebrow { display: none; }
+    }
+
+    @media (max-height: 460px) {
+      body { height: auto; min-height: 100svh; overflow: auto; }
     }
   </style>
 </head>
@@ -316,45 +274,35 @@
 <body>
   <header>
     <div class="brand reveal d1">
-      <span class="logo">NILLU.</span>
-      <span class="logo-kn" lang="kn">ನಿಲ್ಲು</span>
+      <span class="wordmark">NILLU</span>
+      <span class="wordmark-kn" lang="kn">ನಿಲ್ಲು</span>
     </div>
-    <div class="location reveal d1">HSR Layout · Bengaluru</div>
+    <div class="place reveal d1">HSR Layout · Bengaluru</div>
   </header>
 
   <main>
-    <div class="steam reveal d1" aria-hidden="true">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="steam reveal d1" aria-hidden="true"><i></i><i></i><i></i></div>
 
     <p class="eyebrow reveal d2">A little something is on its way</p>
 
-    <h1 class="reveal d3">
-      Something lovely<br>
-      is <em>brewing.</em>
-    </h1>
+    <h1 class="reveal d3">Something lovely<br>is <em>brewing.</em></h1>
 
-    <div class="meaning reveal d4">
-      <span class="meaning-kn" lang="kn">ನಿಲ್ಲು</span>
-      <span class="meaning-translit">nillu</span>
-      <p class="meaning-text">
-        Kannada for <b>“stop.”</b> So that’s the whole idea —
+    <div class="name reveal d4">
+      <span class="name-kn" lang="kn">ನಿಲ್ಲು</span>
+      <p class="name-text">
+        Kannada for <b>“stop.”</b> Which is rather the point —
         stop by, slow down, stay a while.
       </p>
     </div>
 
     <p class="description reveal d5">
-      Good coffee. Fresh juices. Little joys.<br>
-      Your new favourite neighbourhood spot<br>
+      A small room with good light,<br>
+      and a reason to slow down.<br>
+      Your new favourite corner of HSR<br>
       is almost here.
     </p>
 
-    <div class="coming-soon reveal d5">Coming Soon</div>
-
-    <div class="divider reveal d6"></div>
-
-    <p class="footer-note reveal d6">ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಲು ಕಾಯುತ್ತಿದ್ದೇವೆ.</p>
-    <p class="eyebrow reveal d6" style="margin: 10px 0 0;">We can’t wait to meet you</p>
+    <div class="coming-soon reveal d6">Coming Soon</div>
   </main>
 
   <footer>
