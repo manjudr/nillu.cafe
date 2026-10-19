@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NILLU Café | Coming Soon</title>
+  <meta name="description" content="NILLU Café, HSR Layout, Bengaluru. Something lovely is brewing. Coming soon.">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      color: #222222;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      padding: 32px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 5px;
+    }
+
+    .location {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #777777;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px 100px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #888888;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      font-weight: 400;
+      letter-spacing: -3px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    h1 span {
+      font-weight: 700;
+    }
+
+    .description {
+      max-width: 420px;
+      font-size: 15px;
+      line-height: 1.9;
+      color: #777777;
+      margin-bottom: 38px;
+    }
+
+    .coming-soon {
+      display: inline-block;
+      border: 1px solid #222222;
+      padding: 14px 30px;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 45px;
+      height: 1px;
+      background: #cccccc;
+      margin: 38px 0 22px;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: #888888;
+      letter-spacing: 1px;
+    }
+
+    footer {
+      padding: 25px 7%;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #eeeeee;
+      color: #888888;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 25px 6%;
+      }
+
+      .logo {
+        font-size: 25px;
+      }
+
+      .location {
+        font-size: 9px;
+        letter-spacing: 1px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      footer {
+        padding: 22px 6%;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">NILLU.</div>
+    <div class="location">HSR Layout · Bengaluru</div>
+  </header>
+
+  <main>
+    <p class="eyebrow">A little something is on its way</p>
+
+    <h1>
+      Something lovely<br>
+      is <span>brewing.</span>
+    </h1>
+
+    <p class="description">
+      Good coffee. Fresh juices. Little joys.<br>
+      Your new favourite neighbourhood spot<br>
+      is almost here.
+    </p>
+
+    <div class="coming-soon">Coming Soon</div>
+
+    <div class="divider"></div>
+
+    <p class="footer-note">We can't wait to meet you.</p>
+  </main>
+
+  <footer>
+    <span>© 2026 NILLU CAFÉ</span>
+    <span>MADE WITH LOVE IN BENGALURU</span>
+  </footer>
+</body>
+</html>
