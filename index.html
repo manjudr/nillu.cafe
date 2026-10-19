@@ -1,48 +1,118 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NILLU Café | Coming Soon</title>
-  <meta name="description" content="NILLU Café, HSR Layout, Bengaluru. Something lovely is brewing. Coming soon.">
+  <meta name="description" content="NILLU Café, HSR Layout, Bengaluru. ನಿಲ್ಲು — Kannada for 'stop'. Good coffee, fresh juices, little joys. Opening soon.">
+  <meta name="theme-color" content="#FBF6EE">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NILLU Café | Coming Soon">
+  <meta property="og:description" content="ನಿಲ್ಲು — Kannada for 'stop'. Stop by, stay a while. HSR Layout, Bengaluru.">
+  <meta property="og:url" content="https://nillu.cafe/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Inter:wght@300;400;500&family=Noto+Serif+Kannada:wght@300..700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #FBF6EE;
+      --bg-soft: #F3EADC;
+      --ink: #2B1D14;
+      --ink-soft: #7A6454;
+      --ink-faint: #A8937F;
+      --accent: #B5633A;
+      --line: #E4D7C5;
     }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #16100C;
+        --bg-soft: #1F1710;
+        --ink: #F4EADE;
+        --ink-soft: #B9A693;
+        --ink-faint: #8A7765;
+        --accent: #D98B5C;
+        --line: #332518;
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
 
     body {
-      min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
-      background: #ffffff;
-      color: #222222;
-      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* soft warm glow behind the content */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -30vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(900px, 130vw);
+      height: min(900px, 130vw);
+      background: radial-gradient(circle, var(--bg-soft) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, main, footer { position: relative; z-index: 1; }
+
+    /* ---------- header ---------- */
     header {
-      padding: 32px 7%;
+      padding: 34px 7% 0;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
     }
 
     .logo {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: 5px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 3px;
+    }
+
+    .logo-kn {
+      font-family: "Noto Serif Kannada", serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--accent);
+      line-height: 1;
     }
 
     .location {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: #777777;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      color: var(--ink-faint);
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
+    /* ---------- main ---------- */
     main {
       flex: 1;
       display: flex;
@@ -50,93 +120,194 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 24px 100px;
+      padding: 56px 24px 88px;
+    }
+
+    .steam {
+      height: 34px;
+      margin-bottom: 22px;
+      display: flex;
+      gap: 7px;
+      align-items: flex-end;
+    }
+
+    .steam span {
+      display: block;
+      width: 2px;
+      height: 26px;
+      border-radius: 2px;
+      background: linear-gradient(to top, var(--accent), transparent);
+      opacity: .45;
+      animation: rise 3.4s ease-in-out infinite;
+    }
+
+    .steam span:nth-child(2) { animation-delay: .5s; height: 34px; }
+    .steam span:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes rise {
+      0%, 100% { transform: translateY(4px) scaleY(.85); opacity: .25; }
+      50%      { transform: translateY(-4px) scaleY(1.1); opacity: .6; }
     }
 
     .eyebrow {
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 4px;
-      color: #888888;
+      color: var(--ink-faint);
       text-transform: uppercase;
-      margin-bottom: 30px;
+      margin-bottom: 26px;
     }
 
     h1 {
-      font-size: clamp(42px, 7vw, 76px);
-      font-weight: 400;
-      letter-spacing: -3px;
-      line-height: 1.1;
-      margin-bottom: 24px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(40px, 7.5vw, 78px);
+      font-weight: 300;
+      letter-spacing: -2px;
+      line-height: 1.08;
+      margin-bottom: 34px;
+      text-wrap: balance;
     }
 
-    h1 span {
-      font-weight: 700;
+    h1 em {
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* ---------- the name, in Kannada ---------- */
+    .meaning {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 26px 34px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: color-mix(in srgb, var(--bg-soft) 45%, transparent);
+      margin-bottom: 34px;
+      max-width: 420px;
+    }
+
+    .meaning-kn {
+      font-family: "Noto Serif Kannada", serif;
+      font-size: clamp(38px, 9vw, 54px);
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+
+    .meaning-translit {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .meaning-text {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      max-width: 300px;
+    }
+
+    .meaning-text b {
+      font-weight: 500;
+      color: var(--ink);
     }
 
     .description {
-      max-width: 420px;
+      max-width: 400px;
       font-size: 15px;
-      line-height: 1.9;
-      color: #777777;
-      margin-bottom: 38px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--ink-soft);
+      margin-bottom: 36px;
     }
 
     .coming-soon {
       display: inline-block;
-      border: 1px solid #222222;
-      padding: 14px 30px;
-      font-size: 11px;
-      letter-spacing: 3px;
+      border: 1px solid var(--ink);
+      border-radius: 100px;
+      padding: 13px 30px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
     }
 
     .divider {
-      width: 45px;
+      width: 40px;
       height: 1px;
-      background: #cccccc;
-      margin: 38px 0 22px;
+      background: var(--line);
+      margin: 36px 0 20px;
     }
 
     .footer-note {
-      font-size: 12px;
-      color: #888888;
-      letter-spacing: 1px;
+      font-family: "Fraunces", Georgia, serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-soft);
     }
 
+    /* ---------- footer ---------- */
     footer {
-      padding: 25px 7%;
+      padding: 24px 7%;
       display: flex;
       justify-content: space-between;
-      gap: 12px;
-      border-top: 1px solid #eeeeee;
-      color: #888888;
-      font-size: 11px;
-      letter-spacing: 1px;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-faint);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
-    @media (max-width: 600px) {
+    /* ---------- entrance ---------- */
+    .reveal {
+      opacity: 0;
+      animation: fadeUp .9s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+
+    .d1 { animation-delay: .05s; }
+    .d2 { animation-delay: .18s; }
+    .d3 { animation-delay: .31s; }
+    .d4 { animation-delay: .44s; }
+    .d5 { animation-delay: .57s; }
+    .d6 { animation-delay: .70s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; }
+      .steam span { animation: none; }
+    }
+
+    /* ---------- small screens ---------- */
+    @media (max-width: 620px) {
       header {
-        padding: 25px 6%;
+        padding: 26px 6% 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
       }
 
-      .logo {
-        font-size: 25px;
-      }
+      .logo { font-size: 23px; }
+      .logo-kn { font-size: 20px; }
+      .location { font-size: 9px; letter-spacing: 2px; }
 
-      .location {
-        font-size: 9px;
-        letter-spacing: 1px;
-      }
+      main { padding: 40px 22px 64px; }
+      h1 { letter-spacing: -1px; }
 
-      h1 {
-        letter-spacing: -2px;
-      }
+      .meaning { padding: 22px 24px; }
 
       footer {
-        padding: 22px 6%;
+        padding: 20px 6%;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        gap: 6px;
       }
     }
   </style>
@@ -144,34 +315,51 @@
 
 <body>
   <header>
-    <div class="logo">NILLU.</div>
-    <div class="location">HSR Layout · Bengaluru</div>
+    <div class="brand reveal d1">
+      <span class="logo">NILLU.</span>
+      <span class="logo-kn" lang="kn">ನಿಲ್ಲು</span>
+    </div>
+    <div class="location reveal d1">HSR Layout · Bengaluru</div>
   </header>
 
   <main>
-    <p class="eyebrow">A little something is on its way</p>
+    <div class="steam reveal d1" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
 
-    <h1>
+    <p class="eyebrow reveal d2">A little something is on its way</p>
+
+    <h1 class="reveal d3">
       Something lovely<br>
-      is <span>brewing.</span>
+      is <em>brewing.</em>
     </h1>
 
-    <p class="description">
+    <div class="meaning reveal d4">
+      <span class="meaning-kn" lang="kn">ನಿಲ್ಲು</span>
+      <span class="meaning-translit">nillu</span>
+      <p class="meaning-text">
+        Kannada for <b>“stop.”</b> So that’s the whole idea —
+        stop by, slow down, stay a while.
+      </p>
+    </div>
+
+    <p class="description reveal d5">
       Good coffee. Fresh juices. Little joys.<br>
       Your new favourite neighbourhood spot<br>
       is almost here.
     </p>
 
-    <div class="coming-soon">Coming Soon</div>
+    <div class="coming-soon reveal d5">Coming Soon</div>
 
-    <div class="divider"></div>
+    <div class="divider reveal d6"></div>
 
-    <p class="footer-note">We can't wait to meet you.</p>
+    <p class="footer-note reveal d6">ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಲು ಕಾಯುತ್ತಿದ್ದೇವೆ.</p>
+    <p class="eyebrow reveal d6" style="margin: 10px 0 0;">We can’t wait to meet you</p>
   </main>
 
   <footer>
-    <span>© 2026 NILLU CAFÉ</span>
-    <span>MADE WITH LOVE IN BENGALURU</span>
+    <span>© 2026 Nillu Café</span>
+    <span>Made with love in Bengaluru</span>
   </footer>
 </body>
 </html>
