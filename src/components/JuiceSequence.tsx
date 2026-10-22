@@ -1,3 +1,4 @@
+import SurfaceLogo from './SurfaceLogo'
 import { Suspense, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
@@ -50,7 +51,7 @@ function JuiceScene({progress,reduced}:{progress:MotionValue<number>;reduced:boo
   <group ref={fruit}>{slices.map((s,i)=><group key={i} position={[s.x,s.y,s.z]}><OrangeSlice/></group>)}</group>
   <group ref={lid}><mesh><cylinderGeometry args={[.82,.8,.12,64]}/><meshStandardMaterial color="#222" roughness={.4}/></mesh><mesh position={[0,.12,0]}><cylinderGeometry args={[.19,.23,.18,32]}/><meshStandardMaterial color="#333"/></mesh></group>
  </group>
- <group ref={glass} position={[1.4,0,0]}>
+ <group ref={glass} position={[1.4,0,0]}><SurfaceLogo surface="glass"/>
   <mesh geometry={tumbler} position={[0,-.78,0]} renderOrder={2}><meshPhysicalMaterial color="#c5d8df" transparent opacity={.2} roughness={.06} metalness={.1} side={THREE.DoubleSide} depthWrite={false}/></mesh>
   <mesh position={[0,.85,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[.55,.018,12,64]}/><meshStandardMaterial color="#dce5e8" metalness={.25} transparent opacity={.65}/></mesh>
   <mesh ref={glassFill}><cylinderGeometry args={[.515,.42,1.32,64]}/><meshPhysicalMaterial color="#ffa512" roughness={.3} clearcoat={.7}/></mesh>

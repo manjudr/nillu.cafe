@@ -23,6 +23,13 @@ if(process.argv.includes('--navigation')){
  const visit=await page.evaluate(()=>({hours:document.querySelector('.visit-hours p').innerText,careValues:[...document.querySelectorAll('.care-grid h3')].map(el=>el.textContent),sceneHeaders:document.querySelectorAll('.demo-nav').length,emptySocialLinks:document.querySelectorAll('.social-links a').length===0,socialLabels:[...document.querySelectorAll('.social-label')].map(el=>el.textContent),duplicateIdentity:!!document.querySelector('.identity-caption p'),overflow:document.documentElement.scrollWidth>innerWidth}));
  console.log(JSON.stringify({identity,identityFonts,pause,headerHides:down,headerReturns:up,skipScenes:skipped,mobileOverflow:overflow,visit,errors}));await browser.close();process.exit(0)
 }
+if(process.argv.includes('--branding')){
+ for(const id of ['coffee-preview','juice-preview','bowl-preview','dessert-preview']){
+  await page.evaluate(id=>{const el=document.getElementById(id);window.scrollTo({top:el.getBoundingClientRect().top+scrollY+(el.offsetHeight-innerHeight),behavior:'instant'})},id);await new Promise(r=>setTimeout(r,1200));await page.screenshot({path:`shots/branded-${id}.png`})
+ }
+ await page.setViewport({width:390,height:844});await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await new Promise(r=>setTimeout(r,600));await page.screenshot({path:'shots/branded-header-mobile.png'});
+ console.log(JSON.stringify({overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),errors}));await browser.close();process.exit(0)
+}
 const results=[];
 async function stage(id,p){await page.evaluate(({id,p})=>{const el=document.getElementById(id);window.scrollTo({top:el.getBoundingClientRect().top+scrollY+p*(el.offsetHeight-innerHeight),behavior:'instant'})},{id,p});await new Promise(r=>setTimeout(r,1200));}
 for(const [id,points] of [['coffee-preview',[.55]],['juice-preview',[.7]],['bowl-preview',[.16,.47,.76,1]],['dessert-preview',[.1,.48,.76,1]]]){

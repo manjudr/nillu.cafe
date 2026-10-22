@@ -115,3 +115,5 @@ body{font-weight:400}a{text-decoration:none}section[id]{scroll-margin-top:90px}.
 .identity-static-name,.brand-link{position:relative}.identity-trademark{position:absolute;top:.08em;right:-.95em;font-family:var(--font-sans);font-size:.12em;font-weight:500;line-height:1;letter-spacing:0}.brand-trademark{position:absolute;top:2px;right:-9px;font-size:9px;line-height:1;font-weight:400}
 /* Fit the header link to the artwork so its trademark sits beside the mark. */
 .site-header .brand-link{display:inline-flex;align-items:flex-start;flex-shrink:0}.site-header .brand-link img{width:auto;height:48px;max-width:none;object-fit:contain}.site-header .brand-trademark{top:1px;right:-9px}@media(max-width:760px){.site-header .brand-link img{width:auto;height:42px}.site-header .brand-trademark{top:1px;right:-8px;font-size:8px}}
+/* Give the original stacked mark enough presence to read as the brand anchor. */
+.site-header .brand-link img{height:62px}.site-header .brand-trademark{font-size:10px;top:2px;right:-11px}@media(max-width:760px){.site-header .brand-link img{height:50px}.site-header .brand-trademark{font-size:8px;right:-9px;top:1px}}

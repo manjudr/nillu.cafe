@@ -1,3 +1,4 @@
+import SurfaceLogo from './SurfaceLogo'
 import { Suspense, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
@@ -27,7 +28,7 @@ function Scene({progress,reduced}:{progress:MotionValue<number>;reduced:boolean}
  return <>
  <ambientLight intensity={1.25}/><directionalLight position={[3,7,4]} intensity={3}/><directionalLight position={[-4,3,-2]} intensity={2}/>
  <group ref={group}>
-  <mesh geometry={cup}><meshPhysicalMaterial color="#fcfcfc" roughness={.2} metalness={.04} clearcoat={1} side={THREE.DoubleSide}/></mesh>
+  <SurfaceLogo surface="cup"/><mesh geometry={cup}><meshPhysicalMaterial color="#fcfcfc" roughness={.2} metalness={.04} clearcoat={1} side={THREE.DoubleSide}/></mesh>
   <mesh position={[1.13,.68,0]} rotation={[0,0,0]} scale={[.72,1,.8]}><torusGeometry args={[.48,.105,24,64]}/><meshPhysicalMaterial color="#fafafa" roughness={.2} clearcoat={1}/></mesh>
   <mesh position={[0,-.065,0]}><cylinderGeometry args={[1.65,1.55,.11,96]}/><meshPhysicalMaterial color="#fafafa" roughness={.25} clearcoat={1}/></mesh>
   <mesh position={[0,-.001,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[1.4,.023,12,96]}/><meshStandardMaterial color="#eee" roughness={.4}/></mesh>
