@@ -163,7 +163,7 @@ export default function LiquidHero({paused=false,active=true}:{paused?:boolean;a
         [LATIN, 'NILLU', IDENTITY_TYPE.latin.weight],
       ])
       if (!alive) return
-      setWords(WORDS.map((w) => makeWordTexture(w.text, w.font, w.weight, 1600, w.suffix)))
+      setWords(WORDS.map((w) => makeWordTexture(w.text, w.font, w.weight, 1600, w.suffix, true)))
     })()
     return () => {
       alive = false

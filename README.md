@@ -35,3 +35,9 @@ Contact information, hours and precise kitchen practices are not included becaus
 ## Visual verification
 
 `scripts/check-juice.mjs` checks the complete page in local Chrome: food scene stages, reverse scrolling, mobile width and reduced motion. It saves screenshots in `shots/` and reports browser errors. Start the dev server before running `node scripts/check-juice.mjs`.
+
+## GitHub Pages publishing
+
+The Pages site must serve compiled `dist` output, never the source `index.html` that imports `/src/main.tsx`. `.github/workflows/deploy-pages.yml` installs dependencies, builds with Node 22, and publishes `dist`.
+
+GitHub blocked the custom workflow on 22 October 2026 because of an account billing lock. The site was restored by publishing the locally compiled output to `gh-pages`, with Pages configured to publish that branch at `/`. This native Pages deployment succeeds. While this fallback is active, pushing source changes to `main` alone does not update the live site; rebuild and update `gh-pages` as well. Once the billing lock is resolved, switch Pages back to the GitHub Actions source and run the workflow.

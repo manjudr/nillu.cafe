@@ -14,6 +14,7 @@ export function makeWordTexture(
   weight = 500,
   targetWidth = 1600,
   suffix = '',
+  trademark = false,
 ): WordTexture {
   const probe = document.createElement('canvas').getContext('2d')
   if (!probe) throw new Error('2d canvas unavailable')
@@ -29,7 +30,7 @@ export function makeWordTexture(
 
   const scale = targetWidth / inkW
   const pad = inkH * scale * 0.1
-  const W = Math.ceil(inkW * scale + pad * 2)
+  const W = Math.ceil(inkW * scale + pad * 2 + (trademark ? inkH * scale * 0.18 : 0))
   const suffixSize = REF * scale * 0.22
   probe.font = `${weight} ${suffixSize}px ${fontFamily}`
   const suffixMetrics = suffix ? probe.measureText(suffix) : null
@@ -53,10 +54,16 @@ export function makeWordTexture(
   ctx.textBaseline = 'alphabetic'
   ctx.fillText(text, pad + m.actualBoundingBoxLeft * scale, pad + m.actualBoundingBoxAscent * scale)
 
+  if (trademark) {
+    const markSize = inkH * scale * 0.12
+    ctx.font = `500 ${markSize}px sans-serif`
+    ctx.fillText('™', pad + inkW * scale + markSize * 0.2, pad + markSize)
+  }
+
   if (suffix && suffixMetrics) {
     ctx.font = `${weight} ${suffixSize}px ${fontFamily}`
     // Align the smaller cafe suffix with the right edge of the name.
-    const suffixX = W - pad - suffixMetrics.actualBoundingBoxRight
+    const suffixX = pad + inkW * scale - suffixMetrics.actualBoundingBoxRight
     ctx.fillText(suffix, suffixX, pad + inkH * scale + suffixGap + suffixAscent)
   }
 

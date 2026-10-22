@@ -9,10 +9,10 @@ export default function StillWord() {
     <div className="absolute inset-0 grid place-items-center">
       <div className="identity-static-lockup">
         <span
-          className="select-none leading-none"
+          className="identity-static-name select-none leading-none"
           style={{ fontSize: 'clamp(3rem, 11vw, 10rem)', fontFamily: IDENTITY_TYPE.latin.family, fontWeight: IDENTITY_TYPE.latin.weight, letterSpacing: '-0.045em' }}
         >
-          NILLU
+          NILLU<sup className="identity-trademark">™</sup>
         </span>
         <span className="identity-static-suffix" style={{fontFamily: IDENTITY_TYPE.latin.family, fontWeight: IDENTITY_TYPE.latin.weight}}>.cafe</span>
       </div>
