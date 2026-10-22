@@ -4,7 +4,13 @@ const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrom
 const page=await browser.newPage(),errors=[];page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});page.on('pageerror',e=>errors.push(e.message))
 try{
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
- await page.goto(process.env.URL??`http://127.0.0.1:5193/${(process.argv.includes('--main')||process.argv.includes('--story'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--story')){
+ await page.goto(process.env.URL??`http://127.0.0.1:5194/${(process.argv.includes('--main')||process.argv.includes('--story')||process.argv.includes('--beans'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--beans')){
+  await page.waitForSelector('#coffee-preview canvas');
+  const paths=await page.evaluate(async()=>{const {COFFEE_BEANS,coffeeBeanPose}=await import('/src/lib/coffeeBeans.ts');let maxRadius=0,entered=0;for(let i=0;i<COFFEE_BEANS.length;i++){let entry=false;for(let p=0;p<.5;p+=.001){const b=coffeeBeanPose(p,i);if(b.visible&&b.y<1.45){maxRadius=Math.max(maxRadius,Math.hypot(b.x,b.z));entry=true}if(b.visible&&b.y<=.92)throw Error('Bean escaped below cup');}if(entry)entered++}return{maxRadius,entered}});assert.equal(paths.entered,26);assert(paths.maxRadius+.18<.99);
+  for(const p of [.18,.27,.34]){await page.$eval('#coffee-preview',(el,p)=>scrollTo({top:el.getBoundingClientRect().top+scrollY+p*(el.offsetHeight-innerHeight),behavior:'instant'}),p);await new Promise(r=>setTimeout(r,1400));await page.screenshot({path:`shots/beans-${p}.png`})}
+  await page.setViewport({width:390,height:844});await page.screenshot({path:'shots/beans-mobile.png'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);console.log(JSON.stringify({paths,errors}));await browser.close();process.exit(0);
+ }
+ if(process.argv.includes('--story')){
   await page.waitForSelector('.story-liquid-word canvas');await page.evaluate(()=>document.fonts.ready);
   await page.$eval('.story-liquid-word',e=>e.scrollIntoView({block:'center'}));
   await new Promise(r=>setTimeout(r,3000));const word=await page.$('.story-liquid-word');const kannada=await word.screenshot({path:'shots/story-kannada.png'});
