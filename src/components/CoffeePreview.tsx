@@ -42,7 +42,7 @@ function Scene({progress,reduced}:{progress:MotionValue<number>;reduced:boolean}
 
  </>
 }
-const chapters=[['It starts','with a bean.','The beginning of a familiar ritual.'],['A familiar aroma.','A fresh beginning.','Some things are worth slowing down for.'],['A slow pour.','A welcome pause.','Let the cup fill. Let the day wait.'],['Coffee first.','The rush can wait.','A cup of coffee. Some time to yourself.']]
+const chapters=[['It starts','with a bean.','The first step towards your next coffee.'],['A coffee','in the making.','A familiar ritual, from bean to cup.'],['Poured slowly.','Worth the wait.','A rich pour fills the cup. Your moment is next.'],['Your coffee.','Your moment.','A catch-up with a friend, a little time alone, or a break between plans. There’s always a moment for coffee.']]
 export default function CoffeePreview(){
  const ref=useRef<HTMLElement>(null)
  const reduced=useReducedMotion()

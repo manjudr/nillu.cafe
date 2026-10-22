@@ -5,11 +5,11 @@ import { paintWalk, walkPhase, WALK_DURATION, WALK_STOPS } from '../lib/walkIden
 import type { Phase } from '../lib/walkIdentity'
 
 const story:Record<Phase,{number:string;title:string;accent:string;copy:string}>={
- walk:{number:'01 / THE WALK',title:'A day',accent:'in motion.',copy:'There’s always somewhere to be.'},
- coffee:{number:'02 / THE COFFEE',title:'A little',accent:'pick-me-up.',copy:'Sometimes, a good moment finds you.'},
- pause:{number:'03 / THE PAUSE',title:'A sip.',accent:'A slower moment.',copy:'Let the next thing wait a little.'},
- become:{number:'04 / TAKING SHAPE',title:'That feeling',accent:'has a name.',copy:'ನಿಲ್ಲು — Kannada for “stop.”'},
- nillu:{number:'05 / NILLU CAFE',title:'Nillu Cafe.',accent:'Stay a little.',copy:'Coffee, good company, and a place to slow down.'},
+ walk:{number:'01 / THE WALK',title:'Somewhere',accent:'to be.',copy:'A day full of places to go and things to do.'},
+ coffee:{number:'02 / THE COFFEE',title:'A reason',accent:'to stop.',copy:'Sometimes, it starts with a coffee.'},
+ pause:{number:'03 / THE PAUSE',title:'One sip.',accent:'No hurry.',copy:'Take a moment before the day moves on.'},
+ become:{number:'04 / TAKING SHAPE',title:'That’s',accent:'Nillu.',copy:'Kannada for “stop.” Our invitation to slow down.'},
+ nillu:{number:'05 / NILLU CAFE',title:'A place worth',accent:'pausing for.',copy:'Coffee, fresh flavours, and a warm welcome at Nillu Cafe.'},
 }
 export default function WalkIdentity({embedded=false}:{embedded?:boolean}){
  const reduced=!!useReducedMotion(),canvas=useRef<HTMLCanvasElement>(null),image=useRef<HTMLImageElement|null>(null),elapsed=useRef(reduced?WALK_DURATION:0)

@@ -4,7 +4,13 @@ const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrom
 const page=await browser.newPage(),errors=[];page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});page.on('pageerror',e=>errors.push(e.message))
 try{
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
- await page.goto(process.env.URL??`http://127.0.0.1:5198/${(process.argv.includes('--main')||process.argv.includes('--story')||process.argv.includes('--beans'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--beans')){
+ await page.goto(process.env.URL??`http://127.0.0.1:5199/${(process.argv.includes('--main')||process.argv.includes('--story')||process.argv.includes('--beans')||process.argv.includes('--copy'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--copy')){
+  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('#dessert-preview');await page.evaluate(()=>document.fonts.ready);
+  const sections=['top','about','coffee-preview','juice-preview','bowl-preview','dessert-preview','bites','hospitality','care','visit','pause'];
+  for(const width of [1440,390]){await page.setViewport({width,height:width===390?844:900});for(const id of sections){await page.$eval(`#${id}`,e=>e.scrollIntoView({block:'start',behavior:'instant'}));await new Promise(r=>setTimeout(r,700));await page.screenshot({path:`shots/copy-${id}-${width}.png`});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${id} overflow at ${width}`)}}
+  assert.deepEqual(errors,[]);console.log('All sections visually captured at desktop and mobile widths; no overflow or browser errors.');await browser.close();process.exit(0);
+ }
+ if(process.argv.includes('--beans')){
   await page.waitForSelector('#coffee-preview canvas');
   const paths=await page.evaluate(async()=>{const {COFFEE_BEANS,coffeeBeanPose}=await import('/src/lib/coffeeBeans.ts');let maxRadius=0,entered=0;for(let i=0;i<COFFEE_BEANS.length;i++){let entry=false;for(let p=0;p<.5;p+=.001){const b=coffeeBeanPose(p,i);if(b.visible&&b.y<1.45){maxRadius=Math.max(maxRadius,Math.hypot(b.x,b.z));entry=true}if(b.visible&&b.y<=.92)throw Error('Bean escaped below cup');}if(entry)entered++}return{maxRadius,entered}});assert.equal(paths.entered,26);assert(paths.maxRadius+.18<.99);
   for(const p of [.18,.27,.34]){await page.$eval('#coffee-preview',(el,p)=>scrollTo({top:el.getBoundingClientRect().top+scrollY+p*(el.offsetHeight-innerHeight),behavior:'instant'}),p);await new Promise(r=>setTimeout(r,1400));await page.screenshot({path:`shots/beans-${p}.png`})}
@@ -32,7 +38,7 @@ try{
  for(const phase of ['walk','coffee','pause','become','nillu']){
   await page.click(`[data-seek="${phase}"]`);await new Promise(r=>setTimeout(r,800));await page.screenshot({path:`shots/walk-${phase}.png`});
   const state=await page.evaluate(()=>{const c=document.querySelector('canvas'),ctx=c.getContext('2d'),px=ctx.getImageData(0,0,c.width,c.height).data;let ink=0;for(let i=3;i<px.length;i+=4)if(px[i]>128)ink++;return {active:document.querySelector('.walk-chapters .active')?.dataset.seek,overflow:document.documentElement.scrollWidth>innerWidth,ink}})
-  const headlines={walk:'A day in motion.',coffee:'A little pick-me-up.',pause:'A sip. A slower moment.',become:'That feeling has a name.',nillu:'Nillu Cafe. Stay a little.'};assert.equal(await page.$eval('#walk-title',e=>e.innerText.replace(/\s+/g,' ').trim()),headlines[phase]);assert.equal(state.active,phase);assert.equal(state.overflow,false);assert(state.ink>500);results.push(state)
+  const headlines={walk:'Somewhere to be.',coffee:'A reason to stop.',pause:'One sip. No hurry.',become:'That’s Nillu.',nillu:'A place worth pausing for.'};assert.equal(await page.$eval('#walk-title',e=>e.innerText.replace(/\s+/g,' ').trim()),headlines[phase]);assert.equal(state.active,phase);assert.equal(state.overflow,false);assert(state.ink>500);results.push(state)
   if(phase==='coffee')for(const [name,t] of [['arrival-faint',.35],['arrival',.75],['arrival-full',1.2],['stop',4.8],['drop',6.2],['catch',7.3],['lift',8.46],['sip',10],['lower',12.18],['read-pause',13.6]]){await page.$eval('input[type=range]',(el,value)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,String(value));el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))},t/20.6);await new Promise(r=>setTimeout(r,450));await page.screenshot({path:`shots/walk-${name}.png`})}
  }
  const geometry=await page.evaluate(async()=>{

@@ -62,7 +62,7 @@ function JuiceScene({progress,reduced}:{progress:MotionValue<number>;reduced:boo
  <ContactShadows position={[0,-.9,0]} opacity={.22} scale={12} blur={2.8} far={6} resolution={256}/>
  </>
 }
-const chapters=[['A brighter','beginning.','A splash of color before the first sip.'],['Color comes','together.','Follow the fruit from slice to swirl.'],['From the swirl','to the sip.','Watch the color flow into the glass.'],['Refresh your','usual.','Fresh juice for a change of pace.']]
+const chapters=[['It starts','with fruit.','Bright fruit flavours, ready for the blender.'],['Fruit,','freshly blended.','The slices come together in a refreshing blend.'],['Poured into','your glass.','From the blender to a refreshing sip.'],['A fresh change','of pace.','Bright fruit flavours for afternoons that call for something refreshing.']]
 export default function JuiceSequence(){
  const ref=useRef<HTMLElement>(null),reduced=!!useReducedMotion()
  const {scrollYProgress}=useScroll({target:ref,offset:['start start','end end']})
