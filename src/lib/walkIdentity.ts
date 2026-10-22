@@ -3,8 +3,21 @@ import { LOGO_MOTION } from '../assets/logo-motion'
 type Point = readonly [number,number]
 type Part = keyof typeof LOGO_MOTION.parts
 export type Phase = 'walk'|'coffee'|'pause'|'become'|'nillu'
-export const WALK_DURATION=11.6
-export const WALK_STOPS={walk:2.2,coffee:5.85,pause:7.35,become:9.05,nillu:11.6} as const
+export const WALK_DURATION=18
+export const WALK_STOPS={walk:2.2,coffee:6.5,pause:10.6,become:14.9,nillu:18} as const
+// One timeline keeps the words and the drawing in sync. The original pose
+// coordinates are retained; only the time between the story beats changes.
+export const WALK_TIMELINE=[
+ {time:0,scene:0},{time:3.8,scene:3.8},{time:8.2,scene:7.15},
+ {time:13,scene:7.65},{time:16.6,scene:10.2},{time:18,scene:11.6},
+] as const
+export function walkSceneTime(t:number){
+ for(let i=1;i<WALK_TIMELINE.length;i++){
+  const a=WALK_TIMELINE[i-1],b=WALK_TIMELINE[i]
+  if(t<=b.time)return a.scene+(b.scene-a.scene)*Math.max(0,(t-a.time)/(b.time-a.time))
+ }
+ return 11.6
+}
 const PARTS:Part[]=['backLeg','backArm','torso','frontLeg','frontArm','head']
 const clamp=(v:number)=>Math.max(0,Math.min(1,v))
 const ease=(v:number)=>{const t=clamp(v);return t*t*(3-2*t)}
@@ -63,7 +76,7 @@ export function coffeePose(t:number){
 /** Keep the arrival in the illustration column, clear of the hero copy. */
 export function walkEntrance(t:number){
  const travel=1-Math.pow(1-clamp(t/3.8),1.5)
- return {travel,x:200+300*travel,opacity:ease((t-.12)/.9),phase:300*travel/100*Math.PI*2}
+ return {travel,x:150+350*travel,opacity:ease((t-.12)/.9),phase:350*travel/100*Math.PI*2}
 }
 function person(t:number):Record<Part,Point[]>{
  const {x,phase}=walkEntrance(t),amp=ease((3.8-t)/.75)
@@ -100,8 +113,9 @@ const standing=person(7.65)
 const logoBox={x:255,y:153.4,width:390,height:343.2}
 const destinations=Object.fromEntries(PARTS.map(part=>[part,aligned(standing[part],LOGO_MOTION.parts[part].map(([x,y])=>[logoBox.x+x*.65,logoBox.y+y*.65] as Point))])) as Record<Part,Point[]>
 const delays:Record<Part,number>={head:7.65,torso:7.8,frontLeg:7.9,backLeg:7.95,frontArm:8.0,backArm:8.1}
-export function walkPhase(t:number):Phase{return t<3.8?'walk':t<7.15?'coffee':t<7.65?'pause':t<10.2?'become':'nillu'}
+export function walkPhase(t:number):Phase{const scene=walkSceneTime(t);return scene<3.8?'walk':scene<7.15?'coffee':scene<7.65?'pause':scene<10.2?'become':'nillu'}
 export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageElement,width:number,height:number,dpr:number){
+ t=walkSceneTime(t)
  const scale=Math.min(width/(width<600?650:900),height/650)
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height)
  ctx.translate((width-900*scale)/2,(height-650*scale)/2);ctx.scale(scale,scale)
