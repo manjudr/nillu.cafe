@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
+const TypographyPreview = lazy(() => import('./components/TypographyPreview'))
 const WalkIdentity = lazy(() => import('./components/WalkIdentity'))
 const Experience = lazy(() => import('./components/Experience'))
 import logo from './assets/logo-ink.png'
@@ -12,6 +13,7 @@ function Reveal({children, className = ''}: {children: React.ReactNode; classNam
   return <motion.div className={className} initial={reduced ? false : {opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .15}} transition={{duration: .8}}>{children}</motion.div>
 }
 export default function App() {
+ if (new URLSearchParams(window.location.search).get('preview') === 'type') return <Suspense fallback={<div className="experience-loading">Preparing typography preview…</div>}><TypographyPreview/></Suspense>
  if (new URLSearchParams(window.location.search).get("preview") === "walk") return <Suspense fallback={<div className="experience-loading">Nillu Cafe</div>}><WalkIdentity/></Suspense>
  if (new URLSearchParams(window.location.search).get("preview") === "coffee") return <><a className="skip-link" href="#bites">Skip animations</a><Suspense fallback={<div className="experience-loading">Preparing your pause…</div>}><Experience/></Suspense><div id="bites" className="preview-end"><p>Explore every side of Nillu.</p><a href="/">Explore the full Nillu Cafe website ↗</a></div></>
  return <>

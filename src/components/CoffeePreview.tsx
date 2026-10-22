@@ -55,8 +55,8 @@ export default function CoffeePreview(){
  return <section className="coffee-demo" id="coffee-preview" ref={ref}>
   <div className="demo-sticky">
    <div className="demo-copy" aria-live="polite"><span className="kicker">{String(active+1).padStart(2,'0')} / COFFEE</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{chapters[active][0]}<br/><em>{chapters[active][1]}</em></h2><p>{chapters[active][2]}</p></motion.div></div>
-   <div className="demo-canvas" role="img" aria-label="Scroll-controlled 3D coffee scene: beans fall, espresso pours, and a white ceramic cup fills"><Canvas frameloop={visible?'always':'never'} camera={{position:[3.4,4.1,6.6],fov:35}} dpr={[1,1.75]} gl={{antialias:true,alpha:true}}><Suspense fallback={null}><Scene progress={scrollYProgress} reduced={!!reduced}/></Suspense></Canvas></div>
-   <div className="demo-bottom"><a href="#juice-preview">{active===3 ? 'NEXT: FRESH JUICE ↓' : 'SCROLL TO POUR / NEXT: FRESH JUICE ↓'}</a><div className="demo-steps">{['THE BEAN','THE FALL','THE POUR','THE PAUSE'].map((s,i)=><button key={s} aria-pressed={active===i} className={active===i?'active':''} onClick={()=>{const p=[0,.2,.55,1][i];window.scrollTo({top:(ref.current?.offsetTop??0)+p*((ref.current?.offsetHeight??0)-window.innerHeight),behavior:reduced?'instant':'smooth'})}}>{s}</button>)}</div><span>NILLU / COFFEE</span></div>
+   <div className="demo-canvas" role="img" aria-label="Scroll-controlled 3D coffee scene: beans fall, espresso pours, and a white ceramic cup fills"><Canvas frameloop={visible?(reduced?'demand':'always'):'never'} camera={{position:[3.4,4.1,6.6],fov:35}} dpr={[1,1.75]} gl={{antialias:true,alpha:true}}><Suspense fallback={null}><Scene progress={scrollYProgress} reduced={!!reduced}/></Suspense></Canvas></div>
+   <div className="demo-bottom"><a href="#juice-preview">NEXT: FRESH JUICE ↓</a><span>NILLU / COFFEE</span></div>
    <div className="demo-track"><motion.div style={{width:bar}}/></div>
   </div>
  </section>

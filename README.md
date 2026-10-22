@@ -22,7 +22,7 @@ The opening follows a Chaplin-inspired character who catches a takeaway coffee, 
 - Smoothie bowl: berry base, fruit toppings, granola.
 - Dessert: tiramisu layers, cocoa, fork lifting a bite.
 
-Scroll backward to reverse each sequence. Chapter buttons let visitors jump within a scene. Reduced-motion mode presents finished products in short sections. Offscreen coffee and juice canvases pause rendering; bowl and dessert canvases mount near the viewport. Bowl and dessert also provide image fallbacks if WebGL fails.
+Scroll backward to reverse each sequence. The category navigation and Next links move between scenes; animation-stage button rows have been removed. Reduced-motion mode presents finished products in short sections. Reduced-motion scenes render on demand instead of continuously. Offscreen coffee and juice canvases pause rendering; bowl and dessert canvases mount near the viewport. Bowl and dessert also provide image fallbacks if WebGL fails.
 
 `src/components/Experience.tsx` combines the scenes. Cafe copy and the surrounding page are in `src/App.tsx`; styling is in `src/styles.css`.
 
@@ -41,3 +41,11 @@ Contact information, hours and precise kitchen practices are not included becaus
 The Pages site must serve compiled `dist` output, never the source `index.html` that imports `/src/main.tsx`. `.github/workflows/deploy-pages.yml` installs dependencies, builds with Node 22, and publishes `dist`.
 
 GitHub blocked the custom workflow on 22 October 2026 because of an account billing lock. The site was restored by publishing the locally compiled output to `gh-pages`, with Pages configured to publish that branch at `/`. This native Pages deployment succeeds. While this fallback is active, pushing source changes to `main` alone does not update the live site; rebuild and update `gh-pages` as well. Once the billing lock is resolved, switch Pages back to the GitHub Actions source and run the workflow.
+
+## Typography and responsive layout
+
+Manrope is used for body text, navigation and headings, with Fraunces italic accents. Fonts are self-hosted in `src/assets/fonts/`, including their original SIL Open Font Licenses. Outfit and Noto Sans Kannada/Telugu preserve the liquid identity. Jost and Cormorant Garamond are retained only for the comparison at `/?preview=type`. There are no Google Fonts network requests. Font sources and the repeatable download script are documented in that asset directory.
+
+`src/responsive.css` applies the approved typography and responsive composition. The hero stacks below 900px; navigation becomes an accessible menu below 640px. Short landscape screens use flowing food scenes rather than tall sticky panels.
+
+Run `node scripts/check-responsive.mjs` against the local server to inspect all sections at seven sizes from 320px to 1920px, including landscape. It checks headline clipping, page width, all five hero phases, local font loading, and the mobile menu. `node scripts/check-scenes.mjs` checks all four food scenes in both scroll directions on phone, tablet and desktop. Screenshots are written to `shots/`. Set `URL` to test another local or published build.

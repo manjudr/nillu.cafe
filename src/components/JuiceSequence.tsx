@@ -74,8 +74,8 @@ export default function JuiceSequence(){
  return <section className="coffee-demo juice-demo" id="juice-preview" ref={ref} aria-label="Fresh juice experience">
  <div className="demo-sticky">
  <div className="demo-copy" aria-live="polite"><span className="kicker">{String(active+1).padStart(2,'0')} / FRESH JUICE</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{chapters[active][0]}<br/><em>{chapters[active][1]}</em></h2><p>{chapters[active][2]}</p></motion.div></div>
- <div className="demo-canvas juice-canvas" role="img" aria-label="Scroll to drop orange slices into a blender, blend them, tilt the jug and pour orange juice into a glass"><Canvas frameloop={visible?'always':'never'} camera={{position:[3.3,3.3,7.8],fov:38}} dpr={[1,1.75]} gl={{antialias:true,alpha:true}}><Suspense fallback={null}><JuiceScene progress={scrollYProgress} reduced={reduced}/></Suspense></Canvas></div>
- <div className="demo-bottom"><a href="#bowl-preview">SCROLL TO POUR / NEXT: SMOOTHIE BOWLS ↓</a><div className="demo-steps">{['THE FRUIT','THE BLEND','THE POUR','THE GLASS'].map((s,i)=><button key={s} aria-pressed={active===i} className={active===i?'active':''} onClick={()=>window.scrollTo({top:(ref.current?.offsetTop??0)+[0,.38,.69,1][i]*((ref.current?.offsetHeight??0)-window.innerHeight),behavior:reduced?'instant':'smooth'})}>{s}</button>)}</div><span>02 / FRESH JUICE</span></div>
+ <div className="demo-canvas juice-canvas" role="img" aria-label="Scroll to drop orange slices into a blender, blend them, tilt the jug and pour orange juice into a glass"><Canvas frameloop={visible?(reduced?'demand':'always'):'never'} camera={{position:[3.3,3.3,7.8],fov:38}} dpr={[1,1.75]} gl={{antialias:true,alpha:true}}><Suspense fallback={null}><JuiceScene progress={scrollYProgress} reduced={reduced}/></Suspense></Canvas></div>
+ <div className="demo-bottom"><a href="#bowl-preview">NEXT: SMOOTHIE BOWLS ↓</a><span>02 / FRESH JUICE</span></div>
  <div className="demo-track"><motion.div style={{width:bar}}/></div>
  </div>
  </section>

@@ -1,0 +1,1 @@
+Self-hosted fonts from Google Fonts (https://github.com/google/fonts/tree/main/ofl). Manrope and Fraunces are the approved site pairing. Outfit and Noto Sans Kannada/Telugu preserve the liquid identity; Jost and Cormorant Garamond are used only by the comparison preview. Each family includes its original SIL Open Font License. Download with python3 scripts/download-site-fonts.py.

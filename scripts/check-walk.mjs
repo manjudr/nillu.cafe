@@ -4,7 +4,7 @@ const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrom
 const page=await browser.newPage(),errors=[];page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});page.on('pageerror',e=>errors.push(e.message))
 try{
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
- await page.goto(process.env.URL??`http://127.0.0.1:5200/${(process.argv.includes('--main')||process.argv.includes('--story')||process.argv.includes('--beans')||process.argv.includes('--copy'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--copy')){
+ await page.goto(process.env.URL??process.argv.find(arg=>arg.startsWith('--url='))?.slice(6)??`http://127.0.0.1:5203/${(process.argv.includes('--main')||process.argv.includes('--story')||process.argv.includes('--beans')||process.argv.includes('--copy'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--copy')){
   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('#dessert-preview');await page.evaluate(()=>document.fonts.ready);
   const sections=['top','about','coffee-preview','juice-preview','bowl-preview','dessert-preview','bites','hospitality','care','visit','pause'];
   for(const width of [1440,390]){await page.setViewport({width,height:width===390?844:900});for(const id of sections){await page.$eval(`#${id}`,e=>e.scrollIntoView({block:'start',behavior:'instant'}));await new Promise(r=>setTimeout(r,700));await page.screenshot({path:`shots/copy-${id}-${width}.png`});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${id} overflow at ${width}`)}}
