@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-core'
 const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'],defaultViewport:{width:1440,height:900}})
 const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
-await page.goto(process.env.URL ?? 'http://127.0.0.1:5185/',{waitUntil:'domcontentloaded'});await page.waitForSelector('#dessert-preview');await page.evaluate(()=>document.fonts.ready);
+await page.goto(process.env.URL ?? 'http://127.0.0.1:5187/',{waitUntil:'domcontentloaded'});await page.waitForSelector('#dessert-preview');await page.evaluate(()=>document.fonts.ready);
 await new Promise(r=>setTimeout(r,2400));await page.screenshot({path:'shots/final-identity-desktop.png'});
 const identity=await page.evaluate(()=>({canvas:!!document.querySelector('#hero canvas'),scripts:[...document.querySelectorAll('.identity-caption [lang]')].map(el=>el.textContent),brokenAnchors:[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.getAttribute('href').slice(1))).map(a=>a.getAttribute('href'))}));
 await page.locator('.identity-caption button').click();

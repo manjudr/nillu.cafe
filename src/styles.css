@@ -109,3 +109,6 @@ body{font-weight:400}a{text-decoration:none}section[id]{scroll-margin-top:90px}.
 .experience-nav .scene-skip{color:#666;font-size:11px;text-decoration:underline;text-underline-offset:4px}.experience-nav{gap:24px}.experience-nav>span{margin-right:8px}@media(max-width:760px){.experience-nav{gap:8px 20px}.experience-nav>span{margin-right:0}.experience-nav .scene-skip{font-size:10px}}
 .care-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}@media(max-width:760px){.care-grid{grid-template-columns:1fr}}
 .identity-static-lockup{display:flex;flex-direction:column;align-items:flex-end;gap:clamp(6px,1vw,14px)}.identity-static-suffix{font-size:clamp(15px,2.4vw,34px);line-height:1;letter-spacing:-.025em}
+
+/* Opening status belongs to the hero’s type hierarchy. */
+.landing{padding-top:130px;min-height:900px}.hero-arrival{margin-bottom:28px}.hero-title .arrival-status{color:#111;font-size:28px;line-height:1.2;font-weight:500;letter-spacing:-.035em}.hero-title .arrival-location{color:#666;font-size:12px;line-height:1.5;letter-spacing:.045em;margin-top:9px}.hero-title h1{margin-top:0}@media(max-width:760px){.landing{padding-top:105px;min-height:920px}.hero-title{padding-top:35px}.hero-title .arrival-status{font-size:25px}.hero-title .arrival-location{font-size:11px;margin-top:8px}.hero-arrival{margin-bottom:25px}.hero-liquid{top:52%;height:34%}}

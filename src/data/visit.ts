@@ -4,7 +4,7 @@ export const VISIT = {
   closes: '22:00',
   hoursLabel: '11 AM–10 PM',
   days: '',
-  address: '',
+  address: 'HSR Layout, Bengaluru',
   mapUrl: '',
   instagramUrl: '',
   facebookUrl: '',
