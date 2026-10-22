@@ -5,15 +5,13 @@ const page=await browser.newPage(),errors=[];page.on('console',m=>{if(m.type()==
 try{
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
  await page.goto(process.env.URL??`http://127.0.0.1:5193/${(process.argv.includes('--main')||process.argv.includes('--story'))?'':'?preview=walk'}`,{waitUntil:'domcontentloaded'});if(process.argv.includes('--story')){
-  await page.waitForSelector('.story-liquid-word');await page.evaluate(()=>document.fonts.ready);
+  await page.waitForSelector('.story-liquid-word canvas');await page.evaluate(()=>document.fonts.ready);
   await page.$eval('.story-liquid-word',e=>e.scrollIntoView({block:'center'}));
-  await page.waitForFunction(()=>Number(document.querySelector('.story-liquid-filter feDisplacementMap')?.getAttribute('scale'))>25);
-  await page.screenshot({path:'shots/story-liquid.png'});
-  await page.waitForFunction(()=>document.querySelector('.story-liquid-word')?.style.filter==='none');
-  await page.evaluate(()=>scrollTo(0,0));await new Promise(r=>setTimeout(r,300));await page.$eval('.story-liquid-word',e=>e.scrollIntoView({block:'center'}));await page.waitForFunction(()=>Number(document.querySelector('.story-liquid-filter feDisplacementMap')?.getAttribute('scale'))>25);
+  await new Promise(r=>setTimeout(r,3000));const word=await page.$('.story-liquid-word');const kannada=await word.screenshot({path:'shots/story-kannada.png'});
+  await new Promise(r=>setTimeout(r,6700));const english=await word.screenshot({path:'shots/story-english.png'});assert(!Buffer.from(kannada).equals(Buffer.from(english)));
   await page.setViewport({width:390,height:844});await page.$eval('.story-liquid-word',e=>e.scrollIntoView({block:'center'}));await page.screenshot({path:'shots/story-liquid-mobile.png'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.story-liquid-word');await page.$eval('.story-liquid-word',e=>e.scrollIntoView({block:'center'}));assert.equal(await page.$eval('.story-liquid-word',e=>getComputedStyle(e).filter),'none');
-  assert.deepEqual(errors,[]);console.log('Story word: ripples on entry, settles, mobile fits, reduced motion stays still.');await browser.close();process.exit(0);
+  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.story-liquid-still');assert.equal(await page.$$eval('.story-liquid-word canvas',e=>e.length),0);
+  assert.deepEqual(errors,[]);console.log('Story: original liquid shader changes Kannada to English; mobile fits; reduced motion uses still text.');await browser.close();process.exit(0);
  }
  if(process.argv.includes('--main')){
   await page.waitForSelector('.walk-discover');await page.waitForSelector('#explore');

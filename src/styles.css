@@ -124,4 +124,4 @@ body{font-weight:400}a{text-decoration:none}section[id]{scroll-margin-top:90px}.
 
 .walk-discover{position:absolute;bottom:32px;left:7%;font-size:12px;display:flex;align-items:center;gap:24px;z-index:4;min-height:44px}.walk-discover span{border:1px solid #ddd;border-radius:50%;width:40px;height:40px;display:grid;place-items:center}.walk-discover:focus-visible{outline:2px solid #111;outline-offset:5px}@media(max-width:760px){.walk-embedded .walk-story{min-height:710px}.walk-discover{bottom:20px}}
 
-.story-liquid-filter{position:absolute;width:0;height:0;pointer-events:none}.story-liquid-word{display:inline-block;flex-shrink:0;font-family:"Noto Sans Kannada",sans-serif;font-weight:700;line-height:1.65;padding:8px 0}@media(prefers-reduced-motion:reduce){.story-liquid-word{filter:none!important}}
+.story-liquid-word{position:relative;flex-shrink:0;width:320px;height:190px}.story-liquid-still{position:absolute;inset:0;display:grid;place-items:center;font-family:"Noto Sans Kannada",sans-serif;font-weight:700;font-size:70px}@media(max-width:760px){.story-liquid-word{width:260px;height:155px;margin-left:-20px}.story-liquid-still{font-size:50px}}

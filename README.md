@@ -13,7 +13,7 @@ Open http://127.0.0.1:5180/. Build with `npm run build`; preview the build with 
 
 The main page includes the introduction, four scroll-controlled 3D food scenes, quick snacks, hospitality/services, cafe values and closing section. `/?preview=coffee` opens all four scenes together without the introduction.
 
-The opening restores the liquid Nillu identity in English, Kannada and Telugu, with a pause control. Small Kannada companion labels run through the page. See `DESIGN-REVIEW.md` for section-by-section decisions and remaining content needs.
+The opening follows a Chaplin-inspired character who catches a takeaway coffee, sips, and transforms into the Nillu logo. It plays once without preview controls. The story section reuses the original liquid shader to alternate between Kannada and English Nillu lettering. Reduced motion shows a still identity. See `DESIGN-REVIEW.md` for section-by-section decisions and remaining content needs.
 
 ## Scroll scenes
 

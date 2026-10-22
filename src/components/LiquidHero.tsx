@@ -35,7 +35,7 @@ const CYCLE = FORM + HOLD + MELT
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-function LiquidSurface({ words }: { words: WordTexture[] }) {
+function LiquidSurface({ words, story=false }: { words: WordTexture[]; story?:boolean }) {
   const material = useRef<THREE.ShaderMaterial>(null)
   const { size, viewport } = useThree()
 
@@ -69,7 +69,7 @@ function LiquidSurface({ words }: { words: WordTexture[] }) {
   }
 
   useEffect(() => {
-    const el = document.getElementById('hero')
+    const el = document.getElementById(story?'story-word':'hero')
     if (!el) return
 
     const onMove = (e: PointerEvent) => {
@@ -91,7 +91,7 @@ function LiquidSurface({ words }: { words: WordTexture[] }) {
       el.removeEventListener('pointermove', onMove)
       el.removeEventListener('pointerleave', onLeave)
     }
-  }, [])
+  }, [story])
 
   useFrame((_, delta) => {
     const u = material.current?.uniforms
@@ -141,7 +141,7 @@ function LiquidSurface({ words }: { words: WordTexture[] }) {
   )
 }
 
-export default function LiquidHero({paused=false,active=true}:{paused?:boolean;active?:boolean}) {
+export default function LiquidHero({paused=false,active=true,story=false}:{paused?:boolean;active?:boolean;story?:boolean}) {
   const [words, setWords] = useState<WordTexture[] | null>(null)
   const [reduced, setReduced] = useState(false)
 
@@ -163,18 +163,20 @@ export default function LiquidHero({paused=false,active=true}:{paused?:boolean;a
         [LATIN, 'NILLU', IDENTITY_TYPE.latin.weight],
       ])
       if (!alive) return
-      setWords(WORDS.map((w) => makeWordTexture(w.text, w.font, w.weight, 1600, w.suffix, true)))
+      const selected=story?[{text:'ನಿಲ್ಲು',suffix:'',font:KANNADA,weight:IDENTITY_TYPE.kannada.weight},{text:'NILLU',suffix:'',font:LATIN,weight:IDENTITY_TYPE.latin.weight}]:WORDS
+      setWords(selected.map((w) => makeWordTexture(w.text, w.font, w.weight, 1600, w.suffix, !story)))
     })()
     return () => {
       alive = false
     }
-  }, [reduced])
+  }, [reduced,story])
 
   useEffect(() => {
     return () => words?.forEach((w) => w.texture.dispose())
   }, [words])
 
-  if (reduced || paused) return <StillWord />
+  const still=story?<span lang="kn" className="kannada story-liquid-still">ನಿಲ್ಲು</span>:<StillWord/>
+  if (reduced || paused) return still
 
   return (
     <Canvas
@@ -183,9 +185,9 @@ export default function LiquidHero({paused=false,active=true}:{paused?:boolean;a
       gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
       dpr={[1, 2]}
       flat
-      fallback={<StillWord />}
+      fallback={still}
     >
-      {words && <LiquidSurface words={words} />}
+      {words && <LiquidSurface words={words} story={story} />}
     </Canvas>
   )
 }
