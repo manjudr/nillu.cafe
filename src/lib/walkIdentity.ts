@@ -55,7 +55,16 @@ const CUP_LIP:Point=[-19,-28]
 function headAngle(t:number){
  const glance=-.12*ease((t-3.8)/.25)*(1-ease((t-4.65)/.25))
  const sip=-.04*ease((t-5.15)/.55)*(1-ease((t-6.35)/.55))
- return glance+sip
+ const delight=-.07*ease((t-6.9)/.2)*(1-ease((t-7.4)/.25))
+ return glance+sip+delight
+}
+/** A brief, staggered flourish after the sip, fully gone before the morph. */
+export function coffeeDelight(t:number){
+ return [21,26,18].flatMap((size,i)=>{
+  const p=(t-6.55-i*.16)/.72
+  if(p<=0||p>=1)return []
+  return [{x:534+i*26+12*ease(p),y:193-i*10-(50+i*8)*ease(p),size:size*(.7+.3*ease(p/.2)),angle:-.12+i*.14,opacity:ease(p/.18)*(1-ease((p-.65)/.35))}]
+ })
 }
 /** One pose drives the cup, its contact point, and the hand gripping it. */
 export function coffeePose(t:number){
@@ -142,6 +151,7 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
   // A light face inset makes the eye and toothbrush moustache legible in profile.
   ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(4,-153);ctx.bezierCurveTo(15,-157,20,-150,18,-144);ctx.lineTo(23,-138);ctx.lineTo(18,-135);ctx.lineTo(19,-130);ctx.quadraticCurveTo(16,-122,9,-123);ctx.lineTo(4,-130);ctx.closePath();ctx.fill()
   ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.ellipse(15,-144,1.6,1.9,0,0,Math.PI*2);ctx.fill();ctx.fillRect(14,-134,6,4)
+  if(pt>6.55){ctx.strokeStyle='#0a0a0a';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(12,-127);ctx.quadraticCurveTo(16,-124,19,-128);ctx.stroke()}
   ctx.strokeStyle='#777';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-22,-165);ctx.quadraticCurveTo(-3,-162,17,-165);ctx.stroke()
   ctx.restore()
  }
@@ -161,6 +171,11 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
   ctx.fillStyle='#555';ctx.beginPath();ctx.roundRect(-11,-29,11,1.5,.75);ctx.fill()
   if(pose.caught){const wrap=ease((t-4.72)/.25);ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.ellipse(pose.grip[0],pose.grip[1],mix(9,5,wrap),mix(4,7,wrap),0,0,Math.PI*2);ctx.fill()}
   ctx.restore()
+ }
+ // Small monochrome hearts rise beside the hat, leaving the face and cup clear.
+ for(const heart of coffeeDelight(t)){
+  ctx.save();ctx.globalAlpha=heart.opacity*.85;ctx.fillStyle='#0a0a0a';ctx.translate(heart.x,heart.y);ctx.rotate(heart.angle);ctx.scale(heart.size,heart.size)
+  ctx.beginPath();ctx.moveTo(0,.48);ctx.bezierCurveTo(-.14,.32,-.55,.03,-.48,-.23);ctx.bezierCurveTo(-.41,-.52,-.12,-.48,0,-.25);ctx.bezierCurveTo(.12,-.48,.41,-.52,.48,-.23);ctx.bezierCurveTo(.55,.03,.14,.32,0,.48);ctx.closePath();ctx.fill();ctx.restore()
  }
  if(t>10.0){ctx.save();ctx.globalAlpha=ease((t-10.0)/.45);ctx.drawImage(logo,logoBox.x,logoBox.y,logoBox.width,logoBox.height);ctx.font='500 12px sans-serif';ctx.fillText('™',logoBox.x+logoBox.width+6,logoBox.y+12);ctx.restore()}
 }
