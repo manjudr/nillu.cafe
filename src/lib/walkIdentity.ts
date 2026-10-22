@@ -3,13 +3,13 @@ import { LOGO_MOTION } from '../assets/logo-motion'
 type Point = readonly [number,number]
 type Part = keyof typeof LOGO_MOTION.parts
 export type Phase = 'walk'|'coffee'|'pause'|'become'|'nillu'
-export const WALK_DURATION=20.6
-export const WALK_STOPS={walk:2.4,coffee:7,pause:11.2,become:16.8,nillu:20.6} as const
+export const WALK_DURATION=16.2
+export const WALK_STOPS={walk:1.8,coffee:5.2,pause:8.2,become:13,nillu:16.2} as const
 // One timeline keeps the words and the drawing in sync. The original pose
 // coordinates are retained; only the time between the story beats changes.
 export const WALK_TIMELINE=[
- {time:0,scene:0},{time:4.8,scene:3.8},{time:9.6,scene:5.7},
- {time:14.4,scene:7.65},{time:19.2,scene:10.2},{time:20.6,scene:11.6},
+ {time:0,scene:0},{time:3.6,scene:3.8},{time:6.9,scene:5.7},
+ {time:11.1,scene:7.65},{time:14.8,scene:10.2},{time:16.2,scene:11.6},
 ] as const
 export function walkSceneTime(t:number){
  for(let i=1;i<WALK_TIMELINE.length;i++){
