@@ -60,8 +60,13 @@ export function coffeePose(t:number){
  const cup:Point=caught?held:[mix(558,548,fall),mix(-70,326,fall*fall)]
  return {hand:[handWorld[0]-500,handWorld[1]-HIP_Y] as Point,handWorld,cup,grip,mouth,angle:caught?angle:.09*(1-fall),lip:[held[0]+lipOffset[0],held[1]+lipOffset[1]] as Point,caught,headAngle:tilt}
 }
+/** Keep the arrival in the illustration column, clear of the hero copy. */
+export function walkEntrance(t:number){
+ const travel=1-Math.pow(1-clamp(t/3.8),1.5)
+ return {travel,x:200+300*travel,opacity:ease((t-.12)/.9),phase:300*travel/100*Math.PI*2}
+}
 function person(t:number):Record<Part,Point[]>{
- const travel=1-Math.pow(1-clamp(t/3.8),1.5),x=-100+600*travel,amp=ease((3.8-t)/.75),phase=600*travel/115*Math.PI*2
+ const {x,phase}=walkEntrance(t),amp=ease((3.8-t)/.75)
  const hipY=HIP_Y+7*amp-Math.abs(Math.sin(phase*2))*2*amp,lean=(.025+Math.sin(phase)*.025)*amp
  const world=(p:Point):Point=>[x+p[0]*Math.cos(lean)-p[1]*Math.sin(lean),hipY+p[0]*Math.sin(lean)+p[1]*Math.cos(lean)]
  const leg=(offset:number,side:number)=>{
@@ -100,10 +105,10 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
  const scale=Math.min(width/(width<600?650:900),height/650)
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height)
  ctx.translate((width-900*scale)/2,(height-650*scale)/2);ctx.scale(scale,scale)
- const morph=ease((t-7.65)/2.55),walk=person(Math.min(t,7.65)),x=-100+600*(1-Math.pow(1-clamp(t/3.8),1.5))
+ const morph=ease((t-7.65)/2.55),walk=person(Math.min(t,7.65)),{x,opacity:arrival}=walkEntrance(t)
  ctx.save();ctx.globalAlpha=.7*(1-morph);ctx.strokeStyle='#e6e6e6';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(45,503);ctx.lineTo(855,503);ctx.stroke();ctx.restore()
- ctx.save();ctx.globalAlpha=.065;ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.ellipse(mix(x,450,morph),502,mix(35,140,morph),mix(4,7,morph),0,0,Math.PI*2);ctx.fill();ctx.restore()
- ctx.fillStyle='#0a0a0a'
+ ctx.save();ctx.globalAlpha=.065*arrival;ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.ellipse(mix(x,450,morph),502,mix(35,140,morph),mix(4,7,morph),0,0,Math.PI*2);ctx.fill();ctx.restore()
+ ctx.save();ctx.globalAlpha=arrival;ctx.fillStyle='#0a0a0a'
  for(const part of PARTS){
   let points=walk[part]
   if(t>=7.65){const p=ease((t-delays[part])/1.8);points=standing[part].map((a,i)=>{const b=destinations[part][i];return [mix(a[0],b[0],p),mix(a[1],b[1],p)-Math.sin(p*Math.PI)*10] as Point})}
@@ -112,9 +117,9 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
  // Costume details follow the same body and head transforms, then dissolve into the mark.
  const detailAlpha=1-ease((t-7.65)/.65)
  if(detailAlpha>0){
-  const pt=Math.min(t,7.65),travel=1-Math.pow(1-clamp(pt/3.8),1.5),amp=ease((3.8-pt)/.75),phase=600*travel/115*Math.PI*2
+  const pt=Math.min(t,7.65),{x:bodyX,phase}=walkEntrance(pt),amp=ease((3.8-pt)/.75)
   const hipY=HIP_Y+7*amp-Math.abs(Math.sin(phase*2))*2*amp,lean=(.025+Math.sin(phase)*.025)*amp
-  ctx.save();ctx.globalAlpha=detailAlpha;ctx.translate(-100+600*travel,hipY);ctx.rotate(lean)
+  ctx.save();ctx.globalAlpha=detailAlpha*arrival;ctx.translate(bodyX,hipY);ctx.rotate(lean)
   // White shirt, narrow lapels, and a small black tie inside the fitted coat.
   ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(-10,-101);ctx.lineTo(0,-91);ctx.lineTo(10,-101);ctx.lineTo(5,-67);ctx.lineTo(0,-58);ctx.lineTo(-5,-67);ctx.closePath();ctx.fill()
   ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.moveTo(0,-91);ctx.lineTo(3,-86);ctx.lineTo(2,-71);ctx.lineTo(-2,-71);ctx.lineTo(-3,-86);ctx.closePath();ctx.fill()
@@ -126,6 +131,7 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
   ctx.strokeStyle='#777';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-22,-165);ctx.quadraticCurveTo(-3,-162,17,-165);ctx.stroke()
   ctx.restore()
  }
+ ctx.restore()
  // A lidded takeaway cup drops under gravity; the hand absorbs the catch before the sip.
  const cupAlpha=(t>=3.9?1:0)*(1-ease((t-7.65)/.6))
  if(cupAlpha>0){
