@@ -3,13 +3,13 @@ import { LOGO_MOTION } from '../assets/logo-motion'
 type Point = readonly [number,number]
 type Part = keyof typeof LOGO_MOTION.parts
 export type Phase = 'walk'|'coffee'|'pause'|'become'|'nillu'
-export const WALK_DURATION=18
-export const WALK_STOPS={walk:2.2,coffee:6.5,pause:10.6,become:14.9,nillu:18} as const
+export const WALK_DURATION=20.6
+export const WALK_STOPS={walk:2.4,coffee:7,pause:11.2,become:16.8,nillu:20.6} as const
 // One timeline keeps the words and the drawing in sync. The original pose
 // coordinates are retained; only the time between the story beats changes.
 export const WALK_TIMELINE=[
- {time:0,scene:0},{time:3.8,scene:3.8},{time:8.2,scene:7.15},
- {time:13,scene:7.65},{time:16.6,scene:10.2},{time:18,scene:11.6},
+ {time:0,scene:0},{time:4.8,scene:3.8},{time:9.6,scene:5.7},
+ {time:14.4,scene:7.65},{time:19.2,scene:10.2},{time:20.6,scene:11.6},
 ] as const
 export function walkSceneTime(t:number){
  for(let i=1;i<WALK_TIMELINE.length;i++){
@@ -113,7 +113,7 @@ const standing=person(7.65)
 const logoBox={x:255,y:153.4,width:390,height:343.2}
 const destinations=Object.fromEntries(PARTS.map(part=>[part,aligned(standing[part],LOGO_MOTION.parts[part].map(([x,y])=>[logoBox.x+x*.65,logoBox.y+y*.65] as Point))])) as Record<Part,Point[]>
 const delays:Record<Part,number>={head:7.65,torso:7.8,frontLeg:7.9,backLeg:7.95,frontArm:8.0,backArm:8.1}
-export function walkPhase(t:number):Phase{const scene=walkSceneTime(t);return scene<3.8?'walk':scene<7.15?'coffee':scene<7.65?'pause':scene<10.2?'become':'nillu'}
+export function walkPhase(t:number):Phase{const scene=walkSceneTime(t);return scene<3.8?'walk':scene<5.7?'coffee':scene<7.65?'pause':scene<10.2?'become':'nillu'}
 export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageElement,width:number,height:number,dpr:number){
  t=walkSceneTime(t)
  const scale=Math.min(width/(width<600?650:900),height/650)
