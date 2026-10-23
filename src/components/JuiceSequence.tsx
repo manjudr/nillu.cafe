@@ -1,5 +1,9 @@
 import SurfaceLogo from './SurfaceLogo'
-import { Suspense, useMemo, useRef, useState } from 'react'
+import FoodStudio from './FoodStudio'
+import { LiquidPool, LiquidPour, LiquidVolume } from './LiquidEffects'
+import { juicePose, landing } from '../lib/foodMotion'
+import { foodTexture } from '../lib/foodTextures'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
 import { motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'motion/react'
@@ -8,56 +12,55 @@ import type { MotionValue } from 'motion/react'
 
 const clamp=(n:number)=>Math.max(0,Math.min(1,n))
 const smooth=(n:number)=>{const t=clamp(n);return t*t*(3-2*t)}
-function OrangeSlice(){
+function OrangeSlice({map}:{map:THREE.Texture}){
  return <group rotation={[Math.PI/2,0,0]}>
-  <mesh><cylinderGeometry args={[.34,.34,.075,48]}/><meshStandardMaterial color="#fa8608" roughness={.65}/></mesh>
-  <mesh position={[0,.04,0]}><cylinderGeometry args={[.308,.308,.01,48]}/><meshStandardMaterial color="#fff1c9"/></mesh>
-  {Array.from({length:10},(_,i)=><mesh key={i} position={[0,.048,0]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[.284,10,i*Math.PI/5+.035,Math.PI/5-.07]}/><meshStandardMaterial color={i%2?'#ffb62c':'#ffa318'} roughness={.35} side={THREE.DoubleSide}/></mesh>)}
-  <mesh position={[0,.05,0]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[.035,16]}/><meshStandardMaterial color="#fff0ca"/></mesh>
+  <mesh><cylinderGeometry args={[.34,.337,.07,48]}/><meshStandardMaterial color="#e99020" roughness={.7}/></mesh>
+  {[1,-1].map(side=><mesh key={side} position={[0,side*.036,0]} rotation={[-side*Math.PI/2,0,0]}><circleGeometry args={[.34,48]}/><meshPhysicalMaterial map={map} bumpMap={map} bumpScale={.003} roughness={.42} clearcoat={.18}/></mesh>)}
  </group>
 }
 function JuiceScene({progress,reduced}:{progress:MotionValue<number>;reduced:boolean}){
  const motor=useRef<THREE.Group>(null)
- const blender=useRef<THREE.Group>(null),fruit=useRef<THREE.Group>(null),juice=useRef<THREE.Mesh>(null),glassFill=useRef<THREE.Mesh>(null),pour=useRef<THREE.Mesh>(null),blade=useRef<THREE.Group>(null),lid=useRef<THREE.Group>(null),glass=useRef<THREE.Group>(null)
+ const blender=useRef<THREE.Group>(null),fruit=useRef<THREE.Group>(null),blade=useRef<THREE.Group>(null),lid=useRef<THREE.Group>(null),glass=useRef<THREE.Group>(null)
  const jar=useMemo(()=>new THREE.LatheGeometry([[.48,0],[.59,.12],[.77,1.6],[.82,1.68],[.78,1.73],[.72,1.64],[.54,.15],[.44,.08]].map(([x,y])=>new THREE.Vector2(x,y)),64),[])
  const tumbler=useMemo(()=>new THREE.LatheGeometry([[0,0],[.42,0],[.47,.06],[.57,1.62],[.55,1.65],[.52,1.61],[.42,.12],[0,.12]].map(([x,y])=>new THREE.Vector2(x,y)),64),[])
- const pourGeo=useMemo(()=>new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(.49,1.28,0),new THREE.Vector3(.9,1.2,0),new THREE.Vector3(1.29,.65,0),new THREE.Vector3(1.4,-.1,0)]),40,.065,12,false),[])
+ const orangeMap=useMemo(()=>foodTexture('orange'),[])
+ useEffect(()=>()=>orangeMap.dispose(),[orangeMap])
  const slices=useMemo(()=>Array.from({length:9},(_,i)=>({x:Math.sin(i*2.4)*.44,z:Math.cos(i*2.4)*.3,y:2.7+i*.38})),[])
  useFrame(()=>{
- const p=reduced?1:progress.get(),fall=smooth((p-.07)/.23),blend=smooth((p-.32)/.15),tilt=smooth((p-.52)/.09),settle=smooth((p-.8)/.14),fill=clamp((p-.6)/.2)
- if(blender.current){blender.current.rotation.z=-tilt*.95*(1-settle);blender.current.position.set(-.8-settle*.7,0,0);blender.current.scale.setScalar(1-settle*.95);blender.current.visible=p<.95}
- if(lid.current){lid.current.position.y=1.8+1.8*(1-smooth((p-.27)/.06))+tilt*1.3;lid.current.visible=p<.54}
- if(motor.current){motor.current.scale.setScalar(1-settle*.95);motor.current.visible=p<.95}
- if(juice.current){juice.current.visible=p>.3;juice.current.scale.y=Math.max(.001,blend*(1-fill)*.75);juice.current.position.y=.82+blend*(1-fill)*.6}
- if(blade.current)blade.current.rotation.y=reduced?0:blend*70
- fruit.current?.children.forEach((f,i)=>{const s=slices[i],b=smooth((p-.3)/.16);f.visible=p<.47;f.position.set(s.x*(1-b),s.y*(1-fall)+(.88+(i%3)*.2)*fall,s.z*(1-b));f.rotation.set(i+fall*3,b*18+i,fall*4);f.scale.setScalar(1-b)})
- if(glassFill.current){glassFill.current.visible=fill>0;glassFill.current.scale.y=Math.max(.001,fill);glassFill.current.position.y=-.67+fill*.66}
- if(pour.current){pour.current.visible=p>.59&&p<.82;pour.current.scale.setScalar(1);const thickness=Math.sin(clamp((p-.59)/.03)*Math.PI/2)*Math.sin(clamp((.82-p)/.03)*Math.PI/2);(pour.current.material as THREE.MeshPhysicalMaterial).opacity=thickness}
- if(glass.current){glass.current.position.x=1.4-settle*.65;glass.current.rotation.y=settle*.25;glass.current.scale.setScalar(1+settle*.17)}
+ const p=reduced?1:progress.get(),state=juicePose(p),{blend,tilt,settle}=state
+ if(blender.current){blender.current.rotation.z=state.angle;blender.current.position.set(state.x,state.y,0);blender.current.visible=p<.97}
+ if(lid.current){lid.current.position.y=1.8+1.8*(1-smooth((p-.27)/.06))+tilt*1.3;lid.current.visible=p<.52}
+ if(motor.current){motor.current.position.x=-1.15-settle*3;motor.current.visible=p<.94}
+ if(blade.current)blade.current.rotation.y=reduced?0:blend*90
+ fruit.current?.children.forEach((f,i)=>{const seed=slices[i],fall=landing(p,.045+(i%5)*.012,.20,seed.y-.35,.025),dissolve=smooth((p-.30)/.16);f.visible=fall.visible&&dissolve<.995;f.position.set(seed.x*(1-dissolve),.35+fall.height,seed.z*(1-dissolve));f.rotation.set(seed.y+fall.turn*2,dissolve*18+i,fall.turn*3);f.scale.setScalar(1-dissolve)})
+ if(glass.current){glass.current.position.x=state.glassX;glass.current.rotation.y=settle*.25;glass.current.scale.setScalar(1+settle*.12)}
  })
  return <>
- <ambientLight intensity={1.6}/><directionalLight position={[3,6,4]} intensity={3.5}/><directionalLight position={[-3,3,-2]} intensity={2}/>
+ <FoodStudio/>
  <group position={[0,-.1,0]}>
- <group ref={motor} position={[-.8,0,0]}>
-  <mesh position={[0,-.37,0]}><cylinderGeometry args={[.62,.73,.65,64]}/><meshPhysicalMaterial color="#f6f6f6" metalness={.18} roughness={.26} clearcoat={1}/></mesh>
+ <group ref={motor} position={[-1.15,0,0]}>
+  <mesh position={[0,-.4225,0]}><cylinderGeometry args={[.62,.73,.755,64]}/><meshPhysicalMaterial color="#f6f6f6" metalness={.18} roughness={.26} clearcoat={1}/></mesh>
   <mesh position={[0,-.08,0]}><cylinderGeometry args={[.5,.58,.13,64]}/><meshStandardMaterial color="#222" metalness={.7} roughness={.3}/></mesh>
   <mesh position={[0,-.36,.64]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.1,.1,.05,32]}/><meshStandardMaterial color="#222" metalness={.6} roughness={.3}/></mesh>
  </group>
- <group ref={blender} position={[-.8,0,0]}>
-  <mesh geometry={jar} position={[0,0,0]}><meshPhysicalMaterial color="#d3e7ed" transparent opacity={.22} roughness={.08} metalness={.12} side={THREE.DoubleSide} depthWrite={false}/></mesh>
-  <mesh position={[.79,.86,0]} scale={[.65,1,.7]}><torusGeometry args={[.42,.06,16,48]}/><meshPhysicalMaterial color="#cadbde" transparent opacity={.4} roughness={.12}/></mesh>
+ <group ref={blender} position={[-1.15,0,0]}>
+  <mesh geometry={jar} position={[0,0,0]}><meshPhysicalMaterial color="#f5fbfc" transparent opacity={.28} roughness={.08} metalness={0} clearcoat={1} envMapIntensity={.9} side={THREE.DoubleSide} depthWrite={false}/></mesh>
+  <mesh position={[.79,.86,0]} scale={[.65,1,.7]}><torusGeometry args={[.42,.06,16,48]}/><meshPhysicalMaterial color="#e3edef" transparent opacity={.4} roughness={.12} metalness={0}/></mesh>
   <group ref={blade} position={[0,.16,0]}>{[0,Math.PI/2].map(r=><mesh rotation={[0,r,.12]} key={r}><boxGeometry args={[.72,.025,.1]}/><meshStandardMaterial color="#aaa" metalness={.85} roughness={.2}/></mesh>)}</group>
-  <mesh ref={juice} position={[0,.5,0]}><cylinderGeometry args={[.67,.5,1.2,64]}/><meshPhysicalMaterial color="#ff9b0b" roughness={.35} clearcoat={.6}/></mesh>
-  <group ref={fruit}>{slices.map((s,i)=><group key={i} position={[s.x,s.y,s.z]}><OrangeSlice/></group>)}</group>
+  <LiquidVolume color="#ed9c29" sample={()=>{const state=juicePose(reduced?1:progress.get());return {bottom:.14,top:state.blend>.002?state.remaining:.14,radiusBottom:.45,radiusTop:.45+.20*state.blend*(1-state.fill),slope:Math.tan(-state.angle),ceiling:1.63}}}/>
+  <LiquidPool kind="juice" sample={()=>{const p=reduced?1:progress.get(),state=juicePose(p);return {height:state.remaining,radius:state.blend>.002&&state.remaining>.18?.45+.20*state.blend*(1-state.fill):0,activity:p>.30&&p<.52?.7:state.flow*.4,slope:Math.tan(-state.angle),floor:.15,ceiling:1.63}}}/>
+  <group ref={fruit}>{slices.map((s,i)=><group key={i} position={[s.x,s.y,s.z]}><OrangeSlice map={orangeMap}/></group>)}</group>
   <group ref={lid}><mesh><cylinderGeometry args={[.82,.8,.12,64]}/><meshStandardMaterial color="#222" roughness={.4}/></mesh><mesh position={[0,.12,0]}><cylinderGeometry args={[.19,.23,.18,32]}/><meshStandardMaterial color="#333"/></mesh></group>
  </group>
- <group ref={glass} position={[1.4,0,0]}><SurfaceLogo surface="glass"/>
-  <mesh geometry={tumbler} position={[0,-.78,0]} renderOrder={2}><meshPhysicalMaterial color="#c5d8df" transparent opacity={.2} roughness={.06} metalness={.1} side={THREE.DoubleSide} depthWrite={false}/></mesh>
+ <group ref={glass} position={[1.45,0,0]}><SurfaceLogo surface="glass"/>
+  <mesh geometry={tumbler} position={[0,-.78,0]} renderOrder={2}><meshPhysicalMaterial color="#f0f7fa" transparent opacity={.24} roughness={.07} metalness={0} clearcoat={1} envMapIntensity={.85} side={THREE.DoubleSide} depthWrite={false}/></mesh>
   <mesh position={[0,.85,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[.55,.018,12,64]}/><meshStandardMaterial color="#dce5e8" metalness={.25} transparent opacity={.65}/></mesh>
-  <mesh ref={glassFill}><cylinderGeometry args={[.515,.42,1.32,64]}/><meshPhysicalMaterial color="#ffa512" roughness={.3} clearcoat={.7}/></mesh>
-  <group position={[.43,.72,0]} rotation={[0,.4,-.25]}><OrangeSlice/></group>
+  <LiquidVolume color="#eea12c" sample={()=>{const state=juicePose(reduced?1:progress.get());return {bottom:-.66,top:state.top,radiusBottom:.425,radiusTop:state.radius}}}/>
+  <LiquidPool kind="juice" sample={()=>{const state=juicePose(reduced?1:progress.get());return {height:state.top,radius:state.fill>.001?state.radius:0,activity:state.flow}}}/>
+  <group position={[.43,.72,0]} rotation={[0,.4,-.25]}><OrangeSlice map={orangeMap}/></group>
  </group>
- <mesh ref={pour} geometry={pourGeo}><meshPhysicalMaterial color="#ffa512" roughness={.25} clearcoat={1} transparent/></mesh>
+ <LiquidPour color="#ef9f29" bend sample={()=>{const state=juicePose(reduced?1:progress.get());return {from:state.lip,to:[state.glassX,state.top+.01,0],flow:state.flow,radius:.055,front:state.front,tail:state.tail}}}/>
+
  </group>
  <ContactShadows position={[0,-.9,0]} opacity={.22} scale={12} blur={2.8} far={6} resolution={256}/>
  </>

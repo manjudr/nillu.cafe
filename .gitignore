@@ -4,3 +4,5 @@ dist/
 .DS_Store
 shots/
 .vite/
+# Local generated previews, render caches, and archived experiments.
+output/

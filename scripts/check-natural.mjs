@@ -1,0 +1,19 @@
+import puppeteer from 'puppeteer-core'
+import assert from 'node:assert/strict'
+const url=process.env.URL??process.argv[2]??'http://127.0.0.1:5206/'
+const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'],defaultViewport:{width:1440,height:900}})
+const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('WebGL: INVALID'))errors.push(m.text())})
+async function stage(id,p){await page.$eval(`#${id}`,(el,p)=>scrollTo({top:el.getBoundingClientRect().top+scrollY+p*(el.offsetHeight-innerHeight),behavior:'instant'}),p);await new Promise(r=>setTimeout(r,1100))}
+try{
+ await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);await page.goto(url,{waitUntil:'networkidle0'});await page.waitForSelector('#dessert-preview');await page.evaluate(()=>document.fonts.ready)
+ if(url.includes('127.0.0.1:5206')||url.includes('127.0.0.1:5207')){
+  const physics=await page.evaluate(async()=>{const {juicePose,coffeeFill,bowlFill,landing}=await import('/src/lib/foodMotion.ts');let maxRimDistance=0,minLipHeight=Infinity;for(let p=.575;p<.82;p+=.002){const s=juicePose(p),cross=Math.sqrt((s.lip[1]-.87)/(s.lip[1]-s.top)),x=s.lip[0]+(s.glassX-s.lip[0])*cross;maxRimDistance=Math.max(maxRimDistance,Math.abs(x-s.glassX)+.055);minLipHeight=Math.min(minLipHeight,s.lip[1]);}return {maxRimDistance,minLipHeight,coffee:coffeeFill(1),bowl:bowlFill(1),landed:landing(1,.32,.23,3)}})
+  assert(physics.maxRimDistance<.53);assert(physics.minLipHeight>.9);assert(physics.coffee.radius<.98);assert.equal(physics.coffee.flow,0);assert.equal(physics.bowl.flow,0);assert.equal(physics.landed.height,0);console.log(JSON.stringify({physics}))
+ }
+ const points={'coffee-preview':[.2,.51,.68,1],'juice-preview':[.35,.64,.74,1],'bowl-preview':[.18,.49,.75,1],'dessert-preview':[.25,.50,.74,1]}
+ for(const [id,stops]of Object.entries(points)){for(const p of stops){await stage(id,p);await page.screenshot({path:`shots/natural-1440-${id}-${p}.png`})}console.log(`Reviewed ${id}`);if(id==='coffee-preview'||id==='juice-preview'){await stage(id,.68);const a=await page.screenshot({path:`shots/flow-${id}-a.png`});await new Promise(r=>setTimeout(r,650));const b=await page.screenshot({path:`shots/flow-${id}-b.png`});assert(!Buffer.from(a).equals(Buffer.from(b)),`${id} should keep flowing when scroll stops`)}}
+ await page.setViewport({width:390,height:844});for(const [id,p]of [['coffee-preview',.55],['juice-preview',.68],['bowl-preview',.53],['dessert-preview',.83]]){await stage(id,p);await page.screenshot({path:`shots/natural-390-${id}.png`});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)}
+ await stage('juice-preview',.64);const before=await page.$eval('#juice-preview h2',e=>e.innerText);await stage('juice-preview',.9);await stage('juice-preview',.64);await page.waitForFunction(text=>document.querySelector('#juice-preview h2').innerText===text,{},before);console.log('Reverse-scroll scene restored:',before)
+ await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('#dessert-preview');for(const id of Object.keys(points)){await page.$eval(`#${id}`,e=>e.scrollIntoView({behavior:'instant'}));await new Promise(r=>setTimeout(r,600));await page.screenshot({path:`shots/natural-reduced-${id}.png`})}
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({desktop:true,mobile:true,reducedMotion:true,reverse:true,errors}))
+}finally{const closing=setTimeout(()=>browser.process()?.kill('SIGKILL'),5000);await browser.close().catch(()=>{});clearTimeout(closing)}
