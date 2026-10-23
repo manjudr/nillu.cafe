@@ -4,7 +4,7 @@ import fallbackPhoto from '../assets/product/coffee-v2.webp'
 import { lazy, Suspense, useRef, useState } from 'react'
 import { motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 const SceneCanvas=lazy(()=>import('./CoffeePreviewCanvas'))
-const chapters=[['It starts','with a bean.','The first step towards your next coffee.'],['A coffee','in the making.','A familiar ritual, from bean to cup.'],['Poured slowly.','Worth the wait.','A rich pour fills the cup. Your moment is next.'],['Your coffee.','Your moment.','A catch-up with a friend, a little time alone, or a break between plans. There’s always a moment for coffee.']]
+const chapters=[['It starts','with a bean.','Every cup begins with coffee beans.'],['A coffee','in the making.','From beans to your cup.'],['Poured slowly.','Worth the wait.','Almost ready for that first sip.'],['Your coffee.','Your moment.','Coffee with a friend, or a cup all to yourself. Enjoy it your way.']]
 export default function CoffeePreview(){
  const ref=useRef<HTMLElement>(null)
  const reduced=useReducedMotion()

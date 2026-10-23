@@ -3,7 +3,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 
 export async function enhanceExperience(element: HTMLElement) {
   const { default: Experience } = await import('../components/Experience')
-  hydrateRoot(element, <Suspense fallback={<div className="experience-loading">Preparing your pause…</div>}><Experience /></Suspense>)
+  hydrateRoot(element, <Suspense fallback={<div className="experience-loading">Loading…</div>}><Experience /></Suspense>)
 }
 
 export async function enhanceStoryWord(element: HTMLElement) {

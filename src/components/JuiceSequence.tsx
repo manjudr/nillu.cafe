@@ -4,7 +4,7 @@ import fallbackPhoto from '../assets/product/juice-v2.webp'
 import { lazy, Suspense, useRef, useState } from 'react'
 import { motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 const SceneCanvas=lazy(()=>import('./JuiceSequenceCanvas'))
-const chapters=[['It starts','with fruit.','Bright fruit flavours, ready for the blender.'],['Fruit,','freshly blended.','The slices come together in a refreshing blend.'],['Poured into','your glass.','From the blender to a refreshing sip.'],['A fresh change','of pace.','Bright fruit flavours for afternoons that call for something refreshing.']]
+const chapters=[['It starts','with fruit.','Fruit, ready to blend.'],['Fruit,','freshly blended.','The fruit goes into the blender.'],['Poured into','your glass.','Blended and ready to pour.'],['A fresh change','of pace.','In the mood for something fruity? Try a fresh juice.']]
 export default function JuiceSequence(){
  const ref=useRef<HTMLElement>(null),reduced=!!useReducedMotion()
  const {scrollYProgress}=useScroll({target:ref,offset:['start start','end end']})

@@ -2,7 +2,7 @@
 export const VISIT = {
   opens: '11:00',
   closes: '22:00',
-  hoursLabel: '11 AM–10 PM',
+  hoursLabel: '11 AM to 10 PM',
   days: 'Monday to Sunday',
   // Confirmed site address. Fit-out is still under way, so the cafe is not
   // trading: the hours above stay "planned" in the copy and are deliberately

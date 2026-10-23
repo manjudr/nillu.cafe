@@ -49,6 +49,7 @@ function LiquidSurface({ words, story=false }: { words: WordTexture[]; story?:bo
     () => ({
       uWord: { value: words[0].texture },
       uForm: { value: 0 },
+      uStory: { value: story ? 1 : 0 },
       uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(1, 1) },
       uPointer: { value: new THREE.Vector2(0, 0) },
@@ -58,14 +59,14 @@ function LiquidSurface({ words, story=false }: { words: WordTexture[]; story?:bo
       uInk: { value: new THREE.Color('#0a0a0a') },
       uPaper: { value: new THREE.Color('#ffffff') },
     }),
-    [words],
+    [words, story],
   )
 
   // Fit the word to the viewport: wide on phones, never too tall on desktop.
   const fit = (aspect: number) => {
     const screen = size.width / Math.max(size.height, 1)
     const widthFraction = size.width < 720 ? 0.86 : 0.8
-    return Math.min((widthFraction * screen) / aspect, 0.46)
+    return Math.min((widthFraction * screen) / aspect, story ? 0.66 : 0.46)
   }
 
   useEffect(() => {
@@ -183,7 +184,7 @@ export default function LiquidHero({paused=false,active=true,story=false}:{pause
       frameloop={active ? 'always' : 'never'}
       className="absolute inset-0"
       gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
-      dpr={[1, 2]}
+      dpr={story ? [1, 3] : [1, 2]}
       flat
       fallback={still}
     >

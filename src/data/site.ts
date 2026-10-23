@@ -6,10 +6,10 @@ export const SITE = {
   name: 'Nillu Cafe',
   // "Bangalore" is carried alongside "Bengaluru" because both spellings are in
   // common search and assistant use; the official name leads in body copy.
-  title: 'Nillu Cafe | 2D Cafe in HSR Layout, Bangalore — Opening Soon',
-  description: 'A playful 2D cafe opening soon at Sector 2, HSR Layout, Bangalore. Nillu Cafe will serve coffee, fresh juices, smoothie bowls, desserts, cakes and bites.',
+  title: 'Nillu Cafe | 2D Cafe in HSR Layout, Bangalore | Opening Soon',
+  description: 'Nillu Cafe is opening soon in Sector 2, HSR Layout, Bangalore. A 2D cafe with coffee, fresh juices, smoothie bowls, snacks, desserts and cakes.',
   image: 'https://nillu.cafe/social-preview.png',
-  imageAlt: 'Nillu Cafe — a playful 2D cafe coming soon to HSR Layout, Bengaluru. Step into a sketch. Make a real moment.',
+  imageAlt: 'Nillu Cafe. A 2D cafe opening soon in HSR Layout, Bengaluru. Step into a sketch. Make a real moment.',
 }
 
 // CafeOrCoffeeShop is a LocalBusiness subtype of Organization, so the stable

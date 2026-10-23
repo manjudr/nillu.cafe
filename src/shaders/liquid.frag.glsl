@@ -5,6 +5,7 @@ precision highp float;
 varying vec2 vUv;
 
 uniform sampler2D uWord;      // current word, luminance = glyph coverage
+uniform float uStory;         // small story word needs a clean, still hold
 uniform float uForm;          // 0 = scattered droplets, 1 = solid letterforms
 uniform float uTime;
 uniform vec2  uResolution;
@@ -35,7 +36,8 @@ void main() {
   vec2 ripple = dir * sin(d * 16.0 - uTime * 2.6) * fall;
   vec2 push = dir * fall;
 
-  vec2 warp = flow * (0.014 + 0.085 * dissolve) + (ripple * 0.055 + push * 0.045);
+  float flowAmount = mix(0.014 + 0.085 * dissolve, 0.099 * dissolve, uStory);
+  vec2 warp = flow * flowAmount + (ripple * 0.055 + push * 0.045);
 
   // Sample the word through the warped field.
   vec2 tuv = (st + warp) / vec2(uTexAspect, 1.0) / uScale + 0.5;
@@ -49,7 +51,7 @@ void main() {
   // droplets rather than simply fading out.
   float grain = snoise(vec3(st * 3.0, uTime * 0.22)) * 0.5 + 0.5;
   float field = cov - dissolve * (0.30 + 0.80 * grain);
-  float edge = fwidth(field) + 0.0035;
+  float edge = mix(fwidth(field) + 0.0035, max(fwidth(field), 0.001), uStory);
   float alpha = smoothstep(0.45 - edge, 0.45 + edge, field);
 
   vec3 col = mix(uPaper, uInk, alpha);
@@ -57,7 +59,7 @@ void main() {
   // A barely-there ambient surface so the hero still breathes between words.
   float amb = snoise(vec3(st * 1.5 + vec2(0.0, -t * 0.7), t * 0.45));
   float ambA = smoothstep(0.58, 0.95, amb) * 0.045;
-  col = mix(col, uInk, ambA * (1.0 - alpha));
+  col = mix(col, uInk, ambA * (1.0 - alpha) * (1.0 - uStory));
 
   gl_FragColor = vec4(col, 1.0);
 }
