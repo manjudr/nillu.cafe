@@ -130,8 +130,8 @@
 .footer-main{display:flex;align-items:center;justify-content:space-between;gap:28px}
 .footer-identity{display:flex;align-items:center;gap:26px;min-width:0}
 .footer-brand{display:block;position:relative;flex-shrink:0;min-height:44px}
-.site-footer .footer-brand img{display:block;width:52px;height:auto}
-.footer-trademark{position:absolute;top:0;left:calc(100% + 3px);font-family:var(--font-sans);font-size:12px;font-weight:600;line-height:1;color:var(--color-ink)}
+.site-footer .footer-brand img{display:block;width:auto;height:62px;object-fit:contain}
+.footer-trademark{position:absolute;top:0;left:calc(100% + 3px);font-family:var(--font-sans);font-size:16px;font-weight:600;line-height:1;color:var(--color-ink)}
 .site-footer .footer-identity p{font-size:12px;line-height:1.8;letter-spacing:0;max-width:none;margin:0;color:var(--color-ink)}
 .footer-identity p>span{display:block;font-size:10px;line-height:1.8;margin-top:2px;color:var(--copy-ink)}
 .footer-nav{display:flex;align-items:center;gap:32px}
@@ -140,4 +140,4 @@
 .footer-nav a>span{color:var(--copy-ink)}
 .footer-bottom{display:flex;justify-content:space-between;align-items:baseline;gap:12px 28px;padding-top:22px;font-size:10px;line-height:1.8;color:var(--copy-ink)}
 .site-footer .footer-bottom small{width:auto;font-size:10px;line-height:1.8;text-align:right;max-width:48ch;color:var(--copy-ink)}
-@media(max-width:640px){.site-footer{padding:24px 0 20px}.footer-main{align-items:flex-start;flex-direction:column;gap:12px}.footer-nav{width:100%;justify-content:space-between;gap:20px}.footer-bottom{align-items:flex-start;flex-direction:column;gap:6px;padding-top:12px}.site-footer .footer-bottom small{text-align:left;max-width:40ch}}
+@media(max-width:640px){.footer-trademark{font-size:14px}.site-footer{padding:24px 0 20px}.footer-main{align-items:flex-start;flex-direction:column;gap:12px}.footer-nav{width:100%;justify-content:space-between;gap:20px}.footer-bottom{align-items:flex-start;flex-direction:column;gap:6px;padding-top:12px}.site-footer .footer-bottom small{text-align:left;max-width:40ch}}
