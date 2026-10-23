@@ -95,20 +95,20 @@
 .sketch-room img{aspect-ratio:1400 / 933;object-fit:cover}
 
 /* Visit details use one compact grid, with the QR alongside the social copy. */
-.visit-details{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px;align-content:start}
+.visit-details{display:grid;grid-template-columns:minmax(232px,1fr) minmax(0,1.25fr);gap:24px;align-content:start;align-items:start}
 .visit-hours>p{font-size:28px;gap:10px;margin-top:12px}
 .visit-days{font-size:12px;margin-top:8px;color:var(--copy-ink)}
 .visit-address{border:0;margin:0;padding:0}
 .visit-address address{margin-top:12px;font-size:13px;line-height:1.8}
 .visit-address a{font-size:12px;min-height:44px;margin-top:4px}
-.visit-social{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) 156px;gap:24px;align-items:center;margin:0;padding-top:20px;border-color:var(--section-rule)}
+.visit-social{grid-column:1/-1;display:grid;grid-template-columns:minmax(232px,1fr) minmax(0,1.25fr);gap:24px;align-items:start;margin:0;padding-top:20px;border-color:var(--section-rule)}
 .visit-instagram-copy>p{font-size:14px;line-height:1.9;color:var(--copy-ink);margin-top:10px;max-width:28ch}
 .visit-social .social-links{margin-top:8px;gap:16px}
-.instagram-qr{margin:0;min-width:0;text-align:center}
+.instagram-qr{margin:-16px 0 0 -16px;width:156px;min-width:0;justify-self:start;text-align:center}
 .instagram-qr>a{display:block;border:0;background:#fff;padding:0;min-height:0}
 .instagram-qr img{display:block;width:100%;height:auto}
 .instagram-qr figcaption{font-size:10px;line-height:1.8;margin-top:4px;color:var(--copy-ink)}
-@media(max-width:1100px) and (min-width:901px){.visit-details{grid-template-columns:minmax(0,1fr)}.visit-social{grid-column:auto}.visit-address{padding-top:18px;border-top:1px solid var(--section-rule)}}
+@media(max-width:1100px) and (min-width:901px){.visit-details{grid-template-columns:minmax(0,1fr)}.visit-social{grid-column:auto;grid-template-columns:minmax(0,1fr) 156px}.visit-address{padding-top:18px;border-top:1px solid var(--section-rule)}}
 @media(max-width:640px){.visit-section{gap:28px}.visit-details{grid-template-columns:minmax(0,1fr);gap:20px}.visit-hours>p{font-size:28px}.visit-address{padding-top:18px;border-top:1px solid var(--section-rule)}.visit-social{display:block;grid-column:auto;padding-top:18px}.instagram-qr{display:none}.visit-instagram-copy>p{max-width:none}}
 /* Let mobile content set the hero height; make the illustration fill its stage. */
 @media(max-width:640px){.walk-embedded{min-height:0}.walk-embedded .walk-story{min-height:0;height:auto;align-content:start;padding-top:20px}.walk-embedded .walk-copy{min-height:270px}.walk-embedded .walk-location{margin-bottom:20px}.walk-embedded .walk-stage{height:clamp(260px,36svh,320px);margin-top:8px}.walk-embedded .walk-discover{margin-top:4px;margin-bottom:24px}}
@@ -147,3 +147,11 @@
 .closing .closing-welcome .regional-word{margin:0}
 .namaste-icon{display:block;width:32px;height:32px;flex-shrink:0;color:var(--color-ink)}
 @media(max-width:640px){.namaste-icon{width:30px;height:30px}.closing-welcome{gap:10px}}
+
+/* Align Visit labels and actions to a shared top edge. */
+.visit-details .kicker{display:block}
+.visit-address a,.visit-social .social-links a{gap:12px;white-space:nowrap}
+.visit-address a>span,.visit-social .social-links a>span{flex-shrink:0}
+
+/* Food chapters use their labels and next links for navigation. */
+.demo-track{display:none}
