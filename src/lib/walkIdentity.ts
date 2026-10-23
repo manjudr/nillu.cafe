@@ -111,7 +111,7 @@ const destinations=Object.fromEntries(PARTS.map(part=>[part,aligned(standing[par
 const delays:Record<Part,number>={head:7.65,torso:7.8,frontLeg:7.9,backLeg:7.95,frontArm:8.0,backArm:8.1}
 export function paintWalk(ctx:CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D,t:number,logo:CanvasImageSource,width:number,height:number,dpr:number){
  t=walkSceneTime(t)
- const scale=Math.min(width/(width<600?650:900),height/650)
+ const scale=width<600?Math.min(width/520,height/450):Math.min(width/900,height/650)
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height)
  ctx.translate((width-900*scale)/2,(height-650*scale)/2);ctx.scale(scale,scale)
  const morph=ease((t-7.65)/2.55),walk=person(Math.min(t,7.65)),{x,opacity:arrival}=walkEntrance(t)
