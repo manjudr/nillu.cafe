@@ -15,7 +15,7 @@ export default function JuiceSequence(){
  const bar=useTransform(scrollYProgress,[0,1],['0%','100%'])
  return <section className="coffee-demo juice-demo" id="juice-preview" ref={ref} aria-label="Fresh juice experience">
  <div className="demo-sticky">
- <div className="demo-copy" aria-live="polite"><span className="kicker">{String(active+1).padStart(2,'0')} / FRESH JUICE</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{chapters[active][0]}<br/><em>{chapters[active][1]}</em></h2><p>{chapters[active][2]}</p></motion.div></div>
+ <div className="demo-copy" aria-live="polite" data-chapter={active+1}><span className="kicker">FRESH JUICE</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{chapters[active][0]}<br/><em>{chapters[active][1]}</em></h2><p>{chapters[active][2]}</p></motion.div></div>
  <div className="demo-canvas juice-canvas" role="img" aria-label="Scroll to drop orange slices into a blender, blend them, tilt the jug and pour orange juice into a glass"><SceneBoundary image={fallbackPhoto}>{visible&&!reduced?<Suspense fallback={<SceneFallback image={fallbackPhoto} reduced={reduced}/>}><SceneCanvas progress={scrollYProgress}/></Suspense>:<SceneFallback image={fallbackPhoto} reduced={reduced}/>}</SceneBoundary></div>
  <div className="demo-bottom"><a href="#bowl-preview">NEXT: SMOOTHIE BOWLS ↓</a><span>02 / FRESH JUICE</span></div>
  <div className="demo-track"><motion.div style={{width:bar}}/></div>

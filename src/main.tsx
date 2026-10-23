@@ -1,6 +1,7 @@
 import './assets/fonts/fonts.css'
 import './styles.css'
 import './responsive.css'
+import './sketch.css'
 
 const root = document.getElementById('root')!
 if (root.hasChildNodes() && !new URLSearchParams(location.search).has('preview')) {

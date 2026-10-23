@@ -18,6 +18,6 @@ export default function SiteHeader(){
   <a href="#top" className="brand-link" aria-label="Nillu Cafe home" onClick={()=>setMenuOpen(false)}><img src={logo} alt="Nillu Cafe" width={1304} height={1148}/><sup className="brand-trademark">™</sup></a>
   <button ref={menuButton} className="site-menu-toggle" aria-expanded={menuOpen} aria-controls="main-navigation" onClick={()=>setMenuOpen(open=>!open)}>{menuOpen?'Close':'Menu'}<span aria-hidden="true">{menuOpen?'×':'☰'}</span></button>
   <nav id="main-navigation" className={menuOpen?'nav-open':''} aria-label="Main navigation" onClick={()=>setMenuOpen(false)}><a href="#about">Our story</a><a href="#explore">Food & drinks</a><a href="#hospitality">The Nillu way</a><a href="#visit">Visit us</a></nav>
-  <a className="nav-pill" href="#explore">Explore food & drinks <span>↓</span></a>
+  <a className="nav-pill" href="#explore">Explore food & drinks <span aria-hidden="true">↓</span></a>
  </header>
 }

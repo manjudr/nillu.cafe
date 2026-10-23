@@ -18,7 +18,7 @@ export default function FinishSequence({kind}:{kind:'bowl'|'dessert'}){
  const active=reduced?3:chapter
  return <section ref={ref} id={data.id} className={`coffee-demo finish-demo ${kind}-demo`} aria-label={data.label}>
  <div className="demo-sticky">
- <div className="demo-copy" aria-live="polite"><span className="kicker">{String(active+1).padStart(2,'0')} / {data.label}</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{data.chapters[active][0]}<br/><em>{data.chapters[active][1]}</em></h2><p>{data.chapters[active][2]}</p></motion.div></div>
+ <div className="demo-copy" aria-live="polite" data-chapter={active+1}><span className="kicker">{data.label}</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{data.chapters[active][0]}<br/><em>{data.chapters[active][1]}</em></h2><p>{data.chapters[active][2]}</p></motion.div></div>
  <div className="demo-canvas" role="img" aria-label={kind==='bowl'?'Berry smoothie pours into a ceramic bowl, then banana, strawberries, blueberries and granola assemble as you scroll':'Tiramisu layers assemble, cocoa falls, and a fork lifts a bite as you scroll'}><SceneBoundary image={data.image}>{visible&&!reduced?<Suspense fallback={<SceneFallback image={data.image} reduced={reduced}/>}><SceneCanvas kind={kind} progress={scrollYProgress}/></Suspense>:<SceneFallback image={data.image} reduced={reduced}/>}</SceneBoundary></div>
  <div className="demo-bottom"><a href={`#${data.next}`}>{kind==='bowl'?'NEXT: DESSERTS ↓':'NEXT: QUICK SNACKS ↓'}</a><span>{data.number} / {data.label}</span></div><div className="demo-track"><motion.div style={{width:bar}}/></div>
  </div></section>
