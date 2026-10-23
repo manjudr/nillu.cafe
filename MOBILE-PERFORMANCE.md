@@ -46,4 +46,4 @@ The Vite dev server and standalone previews use the React entry; measure perform
 
 Use scripts/prep-favicon.mjs, scripts/prep-search-assets.mjs and scripts/compress-fonts.py to regenerate their assets. Original artwork, TTFs and licenses are retained.
 
-All changes are local and have not been published.
+The measured mobile work and subsequent 2D-cafe copy are now published at https://nillu.cafe/. Pages deployment: https://github.com/manjudr/nillu.cafe/actions/runs/39973496563. The measurements above were collected locally before publication.

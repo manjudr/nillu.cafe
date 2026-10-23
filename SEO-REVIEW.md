@@ -166,7 +166,7 @@ the animated hero and the remaining JavaScript/food-image payload. Lab results
 vary between runs. The current release preserves the approved animation.
 The mobile follow-up extracts first-screen rules from the compiled stylesheet and loads the full stylesheet asynchronously. The initial full-stylesheet inline experiment was not retained.
 
-These changes are local and have not been published.
+These measurements were collected locally before publication. The site has since been published; see the deployment note below.
 
 ## Mobile follow-up
 
@@ -197,4 +197,4 @@ section: “Good food. Thoughtful care.” The supplied font licenses and origin
 artwork remain intact.
 
 Final measurements are in MOBILE-PERFORMANCE.md and the complete local Lighthouse
-report in shots/lighthouse-mobile.report.html. These changes remain local.
+report in shots/lighthouse-mobile.report.html. The 2D-cafe release is live at https://nillu.cafe/ following successful Pages deployment https://github.com/manjudr/nillu.cafe/actions/runs/39973496563. The custom artifact workflow remains manual-only while the account billing lock is active.

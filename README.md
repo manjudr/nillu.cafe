@@ -32,7 +32,7 @@ Scroll backward to reverse each sequence. The category navigation and Next links
 
 Food imagery and 3D scenes illustrate categories, not actual product photography. The supplied logo is retained. Generated images are saved in `src/assets/product/` as `coffee-v2.webp`, `juice-v2.webp`, `bowl-v2.webp` and `dessert-v2.webp`. Built-in image generation was used. Prompt set: white seamless studio backdrop, premium food editorial lighting, natural textures, no lettering or logos; subjects were a cappuccino with falling beans, orange juice pouring into a glass, a berry smoothie bowl with fruit toppings, and tiramisu with a lifted forkful.
 
-The cafe is opening soon in HSR Layout, Bengaluru. Hours are labelled planned. The owner-supplied Instagram profile is linked. Full address, opening date and other unconfirmed details are not invented. The site has not been deployed by this update.
+The cafe is opening soon in HSR Layout, Bengaluru. Hours are labelled planned. The owner-supplied Instagram profile is linked. Full address, opening date and other unconfirmed details are not invented. The current 2D-cafe release is published at https://nillu.cafe/.
 
 ## Visual verification
 
@@ -43,6 +43,8 @@ The cafe is opening soon in HSR Layout, Bengaluru. Hours are labelled planned. T
 The Pages site must serve compiled `dist` output, never the source `index.html` that imports `/src/main.tsx`. `.github/workflows/deploy-pages.yml` retains the manual artifact-deployment path: it installs dependencies, builds with Node 22, and publishes `dist` when GitHub Actions runners and workflow-based Pages publishing are available.
 
 GitHub blocked the custom workflow on 22 October 2026 because of an account billing lock. The site was restored by publishing the locally compiled output to `gh-pages`, with Pages configured to publish that branch at `/`. This native Pages deployment succeeds. While this fallback is active, pushing source changes to `main` alone does not update the live site; rebuild and update `gh-pages` as well. The custom artifact workflow is manual-only while this branch publishing path is active, so a source push does not start a runner that is blocked by the billing lock. Once the billing lock is resolved, switch Pages back to the GitHub Actions source, restore the workflow push trigger, and run the workflow. Verify the built-in “pages build and deployment” run and the live HTML after each gh-pages publish.
+
+Last verified publication: source `d7f9d8a`, Pages build `b70e5fd`, 23 October 2026. The [Pages deployment](https://github.com/manjudr/nillu.cafe/actions/runs/39973496563) succeeded, and the live HTML matched the local production build byte for byte.
 
 ## Typography and responsive layout
 
