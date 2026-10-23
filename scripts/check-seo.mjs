@@ -5,7 +5,7 @@ import puppeteer from 'puppeteer-core'
 const url = process.env.URL ?? 'http://127.0.0.1:5180/'
 const html = await (await fetch(url)).text()
 assert(html.includes('id="dessert-preview"'), 'Food content missing from initial HTML')
-assert(html.includes('Our welcome invites you to stay.'), 'Story missing from initial HTML')
+assert(html.includes('Our space gives you a reason.'), 'Story missing from initial HTML')
 assert(!html.includes('/src/assets/'), 'Source asset URLs leaked into production HTML')
 assert(!html.includes('<!--$!-->'), 'A server-rendered section failed')
 const robots = await (await fetch(new URL('robots.txt', url))).text()

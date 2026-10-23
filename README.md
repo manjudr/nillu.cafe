@@ -40,9 +40,9 @@ The cafe is opening soon in HSR Layout, Bengaluru. Hours are labelled planned. T
 
 ## GitHub Pages publishing
 
-The Pages site must serve compiled `dist` output, never the source `index.html` that imports `/src/main.tsx`. `.github/workflows/deploy-pages.yml` installs dependencies, builds with Node 22, and publishes `dist`.
+The Pages site must serve compiled `dist` output, never the source `index.html` that imports `/src/main.tsx`. `.github/workflows/deploy-pages.yml` retains the manual artifact-deployment path: it installs dependencies, builds with Node 22, and publishes `dist` when GitHub Actions runners and workflow-based Pages publishing are available.
 
-GitHub blocked the custom workflow on 22 October 2026 because of an account billing lock. The site was restored by publishing the locally compiled output to `gh-pages`, with Pages configured to publish that branch at `/`. This native Pages deployment succeeds. While this fallback is active, pushing source changes to `main` alone does not update the live site; rebuild and update `gh-pages` as well. Once the billing lock is resolved, switch Pages back to the GitHub Actions source and run the workflow.
+GitHub blocked the custom workflow on 22 October 2026 because of an account billing lock. The site was restored by publishing the locally compiled output to `gh-pages`, with Pages configured to publish that branch at `/`. This native Pages deployment succeeds. While this fallback is active, pushing source changes to `main` alone does not update the live site; rebuild and update `gh-pages` as well. The custom artifact workflow is manual-only while this branch publishing path is active, so a source push does not start a runner that is blocked by the billing lock. Once the billing lock is resolved, switch Pages back to the GitHub Actions source, restore the workflow push trigger, and run the workflow. Verify the built-in “pages build and deployment” run and the live HTML after each gh-pages publish.
 
 ## Typography and responsive layout
 
@@ -89,3 +89,10 @@ The native controller calls the shared `walkTimeline.ts`/`walkIdentity.ts` story
 renderer; the `?preview=walk` study uses the same renderer through React.
 
 See `MOBILE-PERFORMANCE.md` for the latest measured results and validation.
+
+## 2D cafe positioning
+
+The owner has confirmed a planned illustrated 2D store concept. The lead line is
+“Step into a sketch. Make a real moment.” The website and search descriptions
+state that the cafe is coming soon. The supplied store-design reference is a
+concept reference and has not been published as a photograph of Nillu.

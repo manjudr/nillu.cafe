@@ -140,3 +140,6 @@ body{font-weight:400}a{text-decoration:none}section[id]{scroll-margin-top:90px}.
 /* A studio placeholder stays white until the live scene is ready. */
 @media(prefers-reduced-motion:no-preference){.scene-fallback{visibility:hidden}}
 .scene-error-fallback,html.graphics-failed .scene-fallback{visibility:visible}
+
+/* Keep the complete two-line brand invitation readable at every viewport. */
+.walk-copy .walk-title.walk-title-sketch{font-size:clamp(30px,4.4vw,70px)}

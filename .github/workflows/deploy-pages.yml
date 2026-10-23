@@ -1,8 +1,9 @@
-name: Build and deploy website
+name: Manual artifact deployment
 
 on:
-  push:
-    branches: [main]
+  # The active Pages source is gh-pages. Custom runners are currently blocked
+  # by the account billing lock; publish a locally verified build to that branch.
+  # Restore the push trigger when billing is resolved and Pages uses workflows.
   workflow_dispatch:
 
 permissions:

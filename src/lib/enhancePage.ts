@@ -52,6 +52,7 @@ export function enhancePage() {
   startWalkPlayer(canvas, reduced, next => {
     if (next === phase) return
     phase = next
+    title.classList.toggle('walk-title-sketch', next === 'walk' || next === 'nillu')
     const current = WALK_STORY[next], accent = document.createElement('em')
     accent.textContent = current.accent
     title.replaceChildren(document.createTextNode(current.title), document.createElement('br'), accent)

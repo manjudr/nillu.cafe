@@ -10,7 +10,7 @@ try{
   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:reduced?'reduce':'no-preference'}])
   await page.goto(process.env.URL??'http://127.0.0.1:5180/',{waitUntil:'networkidle0'})
   await page.waitForSelector('.walk-stage canvas[data-ready="true"][data-renderer="main"]')
-  if(reduced)await page.waitForFunction(()=>document.querySelector('#walk-title').textContent.includes('pausing for.'))
+  if(reduced)await page.waitForFunction(()=>document.querySelector('#walk-title').textContent.includes('Make a real moment.'))
   else await page.waitForFunction(()=>document.querySelector('#walk-title').textContent.includes('A reason'))
   assert.deepEqual(errors,[])
   console.log(`Main-thread compatibility renderer passed; reduced motion ${reduced}`)
