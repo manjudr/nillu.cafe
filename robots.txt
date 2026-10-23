@@ -1,7 +1,30 @@
 User-agent: *
 Allow: /
 
+# Named explicitly for clarity. The wildcard rule above already allows these;
+# these lines document the intent rather than change crawler access.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://nillu.cafe/sitemap.xml
