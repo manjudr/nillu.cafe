@@ -4,26 +4,41 @@ import { VISIT } from './visit.ts'
 export const SITE = {
   url: 'https://nillu.cafe/',
   name: 'Nillu Cafe',
-  title: 'Nillu Cafe | 2D Cafe in HSR Layout — Opening Soon',
-  description: 'A playful 2D cafe is coming to HSR Layout, Bengaluru. Discover Nillu Cafe: coffee, fresh juices, bowls, bites, desserts and cakes with a warm welcome.',
+  // "Bangalore" is carried alongside "Bengaluru" because both spellings are in
+  // common search and assistant use; the official name leads in body copy.
+  title: 'Nillu Cafe | 2D Cafe in HSR Layout, Bangalore — Opening Soon',
+  description: 'A playful 2D cafe opening soon at Sector 2, HSR Layout, Bangalore. Nillu Cafe will serve coffee, fresh juices, smoothie bowls, desserts, cakes and bites.',
   image: 'https://nillu.cafe/social-preview.png',
   imageAlt: 'Nillu Cafe — a playful 2D cafe coming soon to HSR Layout, Bengaluru. Step into a sketch. Make a real moment.',
 }
 
-// Organization is appropriate before a complete street address is confirmed.
-// Switch to CafeOrCoffeeShop with the full address when local-business data is ready.
+// CafeOrCoffeeShop is a LocalBusiness subtype of Organization, so the stable
+// #business @id is kept. Opening hours are intentionally absent until the cafe
+// actually opens; publishing them now would present a closed business as trading.
 export const STRUCTURED_DATA = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'Organization',
+      '@type': 'CafeOrCoffeeShop',
       '@id': `${SITE.url}#business`,
       name: SITE.name,
+      alternateName: ['Nillu', 'ನಿಲ್ಲು'],
       url: SITE.url,
       description: SITE.description,
       sameAs: [VISIT.instagramUrl, VISIT.facebookUrl].filter(Boolean),
       logo: { '@type': 'ImageObject', url: `${SITE.url}brand/nillu-logo.png` },
-      location: { '@type': 'Place', name: 'HSR Layout, Bengaluru' },
+      image: SITE.image,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: VISIT.street,
+        addressLocality: `${VISIT.locality}, ${VISIT.city}`,
+        addressRegion: VISIT.region,
+        postalCode: VISIT.postalCode,
+        addressCountry: VISIT.country,
+      },
+      areaServed: { '@type': 'Place', name: 'HSR Layout, Bengaluru' },
+      servesCuisine: ['Coffee', 'Juices', 'Desserts', 'Snacks'],
+      knowsLanguage: ['en-IN', 'kn'],
     },
     {
       '@type': 'WebSite',

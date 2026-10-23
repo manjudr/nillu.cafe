@@ -43,28 +43,50 @@ business's prominence. An SEO audit score is a technical check, not a recommenda
 probability or a ranking score. No fake ratings, reviews, “best cafe” claims,
 reservation/ordering actions, invented menu prices, or opening dates have been added.
 
-## Why full cafe structured data is deferred
+## Business entity and address (updated 23 October 2026)
 
-The confirmed location is a neighbourhood, not a complete postal address. The
-11 AM–10 PM hours are planned, not current operating hours. Organization markup
-identifies the brand now without publishing incomplete LocalBusiness rich-result
-data or claiming the cafe is open. Once the address is confirmed, upgrade the
-business entity to CafeOrCoffeeShop while retaining its `#business` ID. Add the
-verified street address, postcode, country, map URL and coordinates. Add operating
-hours only with confirmed opening status and working days. Add phone and sameAs
-links only when genuine, public, and displayed on the site.
+The owner confirmed the full trading address and operating days:
+1902, 19th Main, 25th Cross Rd, Sector 2, HSR Layout, Bengaluru, Karnataka 560102,
+open Monday to Sunday. Fit-out work is still under way, so the cafe is **not
+trading yet**.
+
+Implemented on the back of that:
+
+| Change | Detail |
+| --- | --- |
+| Business entity | `Organization` upgraded to `CafeOrCoffeeShop`, retaining the `#business` `@id` as planned |
+| Address | Complete `PostalAddress` with street, locality, region, postcode and country |
+| Entity identity | `alternateName` (`Nillu`, `ನಿಲ್ಲು`), `areaServed`, `servesCuisine`, `knowsLanguage` |
+| Visible address | Full street address in the Visit section, with a map link for the address |
+| Operating days | `visit.ts` `days` populated; shown under the planned hours |
+| City spelling | Title, description and Visit copy carry "Bangalore" alongside "Bengaluru" |
+| Crawler files | `sitemap.xml` gains `lastmod`/`changefreq`; `robots.txt` names major search and assistant crawlers explicitly |
+
+`openingHoursSpecification` is still **deliberately absent**. Publishing operating
+hours for a business that has not opened would present a closed cafe as trading.
+Add it, with `validFrom`, once the opening date is confirmed; the hours shown on
+the page remain labelled "planned opening hours" until then. The explicit
+`robots.txt` crawler entries document intent only — the existing `User-agent: *`
+wildcard already permitted every one of them.
 
 The food exploration is not a priced menu. It is not marked up as a Menu or
 Product feed. Illustrative food images are not presented as photographs of actual
-served dishes. There is no FAQ rich-result claim, llms.txt ranking promise, or
-artificial neighbourhood landing-page network.
+served dishes. There is no FAQ section or FAQPage markup: the owner declined one,
+and FAQ structured data without matching visible content would breach Google's
+structured-data policy. The location, opening status, hours and offering are
+instead carried as prose in the Visit section. No llms.txt ranking promise or
+artificial neighbourhood landing-page network has been added.
 
 ## Later: local presence and indexing
 
-1. Create and verify the Google Business Profile when the full location and opening
-   plan are ready. Use the actual business name, the appropriate cafe category,
-   website, address, and genuine photos. Set a future opening date through Google's
-   supported process rather than marking the cafe open early.
+1. **Highest-value remaining action.** Create and verify the Google Business Profile
+   now that the full address is confirmed. On-page markup alone does not make
+   assistants or Maps answer local "cafe in HSR Layout" questions; they ground on
+   Business Profile, Maps and review data, none of which exists yet. Use the actual
+   business name, the appropriate cafe category, website, the Sector 2 address, and
+   genuine photos. Set a future opening date through Google's supported process
+   rather than marking the cafe open early. Add the resulting Maps URL to
+   `visit.ts` `mapUrl`, which currently falls back to an address search.
 2. Keep the name, address, opening status, hours and contact details consistent
    between the website, Maps, and genuine social profiles. Add the resulting Maps
    and social links to the site.
