@@ -3,35 +3,35 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url(./fraunces-italic-400.ttf) format('truetype');
+  src: url(./fraunces-italic-400.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Fraunces';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(./fraunces-normal-400.ttf) format('truetype');
+  src: url(./fraunces-normal-400.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(./manrope-normal-400.ttf) format('truetype');
+  src: url(./manrope-normal-400.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url(./manrope-normal-500.ttf) format('truetype');
+  src: url(./manrope-normal-500.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(./manrope-normal-600.ttf) format('truetype');
+  src: url(./manrope-normal-600.woff2) format('woff2');
 }
 
 @font-face {
@@ -39,7 +39,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url(./outfit-normal-800-0.ttf) format('truetype');
+  src: url(./outfit-normal-800-0.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Kannada';
@@ -47,7 +47,7 @@
   font-weight: 400;
   font-stretch: normal;
   font-display: swap;
-  src: url(./notosanskannada-normal-400-0.ttf) format('truetype');
+  src: url(./notosanskannada-normal-400-0.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Kannada';
@@ -55,7 +55,7 @@
   font-weight: 700;
   font-stretch: normal;
   font-display: swap;
-  src: url(./notosanskannada-normal-700-1.ttf) format('truetype');
+  src: url(./notosanskannada-normal-700-1.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Telugu';
@@ -63,26 +63,26 @@
   font-weight: 700;
   font-stretch: normal;
   font-display: swap;
-  src: url(./notosanstelugu-normal-700-0.ttf) format('truetype');
+  src: url(./notosanstelugu-normal-700-0.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Jost';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(./jost-normal-400-0.ttf) format('truetype');
+  src: url(./jost-normal-400-0.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url(./cormorantgaramond-italic-400-0.ttf) format('truetype');
+  src: url(./cormorantgaramond-italic-400-0.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(./cormorantgaramond-normal-400-1.ttf) format('truetype');
+  src: url(./cormorantgaramond-normal-400-1.woff2) format('woff2');
 }

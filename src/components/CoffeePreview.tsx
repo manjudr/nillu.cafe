@@ -1,42 +1,9 @@
-import SurfaceLogo from './SurfaceLogo'
-import FoodStudio from './FoodStudio'
-import { LiquidPool, LiquidPour } from './LiquidEffects'
-import { coffeeFill } from '../lib/foodMotion'
-import { COFFEE_BEANS, coffeeBeanPose } from '../lib/coffeeBeans'
-import { Suspense, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { ContactShadows } from '@react-three/drei'
-import { motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import type { MotionValue } from 'motion/react'
-import * as THREE from 'three'
-
-const clamp = (n:number) => Math.max(0, Math.min(1,n))
-function Scene({progress,reduced}:{progress:MotionValue<number>;reduced:boolean}) {
- const group=useRef<THREE.Group>(null)
- const beans=useRef<THREE.Group>(null)
- const cup=useMemo(()=>new THREE.LatheGeometry([
- new THREE.Vector2(.71,0),new THREE.Vector2(.79,.05),new THREE.Vector2(.86,.2),new THREE.Vector2(1.03,.8),new THREE.Vector2(1.09,1.18),new THREE.Vector2(1.08,1.23),new THREE.Vector2(1.01,1.24),new THREE.Vector2(.99,1.17),new THREE.Vector2(.93,.8),new THREE.Vector2(.77,.2),new THREE.Vector2(.70,.12),new THREE.Vector2(0,.12)],96),[])
- const seeds=COFFEE_BEANS
- useFrame(()=>{
- const p=reduced?1:progress.get()
- if(group.current){group.current.rotation.y=-.28+p*.65;group.current.position.y=-.65;group.current.scale.setScalar(.94+clamp((p-.65)/.35)*.13)}
- beans.current?.children.forEach((b,i)=>{const s=seeds[i],pose=coffeeBeanPose(p,i);b.position.set(pose.x,pose.y,pose.z);b.rotation.set(s.turn+pose.fall*6,pose.fall*5,s.turn+pose.fall*3);b.visible=pose.visible;b.scale.setScalar(.85)})
- })
- return <>
- <FoodStudio/>
- <group ref={group}>
-  <SurfaceLogo surface="cup"/><mesh geometry={cup}><meshPhysicalMaterial color="#fcfcfc" roughness={.24} metalness={0} clearcoat={.65} side={THREE.DoubleSide}/></mesh>
-  <mesh position={[1.13,.68,0]} rotation={[0,0,0]} scale={[.72,1,.8]}><torusGeometry args={[.48,.105,24,64]}/><meshPhysicalMaterial color="#fafafa" roughness={.2} clearcoat={1}/></mesh>
-  <mesh position={[0,-.065,0]}><cylinderGeometry args={[1.65,1.55,.11,96]}/><meshPhysicalMaterial color="#fafafa" roughness={.25} clearcoat={1}/></mesh>
-  <mesh position={[0,-.001,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[1.4,.023,12,96]}/><meshStandardMaterial color="#eee" roughness={.4}/></mesh>
-  <LiquidPool kind="coffee" sample={()=>{const state=coffeeFill(reduced?1:progress.get());return {...state,activity:state.flow}}}/>
-  <LiquidPour color="#62341c" sample={()=>{const state=coffeeFill(reduced?1:progress.get());return {from:[-.05,5.2,0],to:[0,state.height+.01,0],flow:state.flow,radius:.030,front:state.front,tail:state.tail}}}/>
- <group ref={beans}>{seeds.map((s,i)=><group key={i} position={[s.x,s.start,s.z]}><mesh scale={[.12,.19,.105]}><sphereGeometry args={[1,16,12]}/><meshStandardMaterial color={i%2?'#53301d':'#392319'} roughness={.72}/></mesh><mesh position={[0,0,.099]} rotation={[0,0,.12]}><capsuleGeometry args={[.009,.24,4,8]}/><meshStandardMaterial color="#21150f"/></mesh></group>)}</group>
- </group>
- <ContactShadows position={[0,-.78,0]} opacity={.25} scale={12} blur={2.8} far={5} resolution={256}/>
-
- </>
-}
+import SceneFallback, { SceneBoundary } from './SceneFallback'
+import { useReducedMotion } from '../lib/useReducedMotion'
+import fallbackPhoto from '../assets/product/coffee-v2.webp'
+import { lazy, Suspense, useRef, useState } from 'react'
+import { motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
+const SceneCanvas=lazy(()=>import('./CoffeePreviewCanvas'))
 const chapters=[['It starts','with a bean.','The first step towards your next coffee.'],['A coffee','in the making.','A familiar ritual, from bean to cup.'],['Poured slowly.','Worth the wait.','A rich pour fills the cup. Your moment is next.'],['Your coffee.','Your moment.','A catch-up with a friend, a little time alone, or a break between plans. There’s always a moment for coffee.']]
 export default function CoffeePreview(){
  const ref=useRef<HTMLElement>(null)
@@ -50,7 +17,7 @@ export default function CoffeePreview(){
  return <section className="coffee-demo" id="coffee-preview" ref={ref}>
   <div className="demo-sticky">
    <div className="demo-copy" aria-live="polite"><span className="kicker">{String(active+1).padStart(2,'0')} / COFFEE</span><motion.div key={active} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{duration:.5}}><h2>{chapters[active][0]}<br/><em>{chapters[active][1]}</em></h2><p>{chapters[active][2]}</p></motion.div></div>
-   <div className="demo-canvas" role="img" aria-label="Scroll-controlled 3D coffee scene: beans fall, espresso pours, and a white ceramic cup fills"><Canvas frameloop={visible?(reduced?'demand':'always'):'never'} camera={{position:[3.4,4.1,6.6],fov:35}} dpr={[1,1.75]} gl={{antialias:true,alpha:true}}><Suspense fallback={null}><Scene progress={scrollYProgress} reduced={!!reduced}/></Suspense></Canvas></div>
+   <div className="demo-canvas" role="img" aria-label="Scroll-controlled 3D coffee scene: beans fall, espresso pours, and a white ceramic cup fills"><SceneBoundary image={fallbackPhoto}>{visible&&!reduced?<Suspense fallback={<SceneFallback image={fallbackPhoto} reduced={reduced}/>}><SceneCanvas progress={scrollYProgress}/></Suspense>:<SceneFallback image={fallbackPhoto} reduced={reduced}/>}</SceneBoundary></div>
    <div className="demo-bottom"><a href="#juice-preview">NEXT: FRESH JUICE ↓</a><span>NILLU / COFFEE</span></div>
    <div className="demo-track"><motion.div style={{width:bar}}/></div>
   </div>

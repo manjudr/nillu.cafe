@@ -2,22 +2,9 @@ import { LOGO_MOTION } from '../assets/logo-motion'
 
 type Point = readonly [number,number]
 type Part = keyof typeof LOGO_MOTION.parts
-export type Phase = 'walk'|'coffee'|'pause'|'become'|'nillu'
-export const WALK_DURATION=16.2
-export const WALK_STOPS={walk:1.8,coffee:5.2,pause:8.2,become:13,nillu:16.2} as const
-// One timeline keeps the words and the drawing in sync. The original pose
-// coordinates are retained; only the time between the story beats changes.
-export const WALK_TIMELINE=[
- {time:0,scene:0},{time:3.6,scene:3.8},{time:6.9,scene:5.7},
- {time:11.1,scene:7.65},{time:14.8,scene:10.2},{time:16.2,scene:11.6},
-] as const
-export function walkSceneTime(t:number){
- for(let i=1;i<WALK_TIMELINE.length;i++){
-  const a=WALK_TIMELINE[i-1],b=WALK_TIMELINE[i]
-  if(t<=b.time)return a.scene+(b.scene-a.scene)*Math.max(0,(t-a.time)/(b.time-a.time))
- }
- return 11.6
-}
+import { walkSceneTime } from './walkTimeline'
+export { WALK_DURATION, WALK_STOPS, WALK_TIMELINE, walkPhase, walkSceneTime } from './walkTimeline'
+export type { Phase } from './walkTimeline'
 const PARTS:Part[]=['backLeg','backArm','torso','frontLeg','frontArm','head']
 const clamp=(v:number)=>Math.max(0,Math.min(1,v))
 const ease=(v:number)=>{const t=clamp(v);return t*t*(3-2*t)}
@@ -122,8 +109,7 @@ const standing=person(7.65)
 const logoBox={x:255,y:153.4,width:390,height:343.2}
 const destinations=Object.fromEntries(PARTS.map(part=>[part,aligned(standing[part],LOGO_MOTION.parts[part].map(([x,y])=>[logoBox.x+x*.65,logoBox.y+y*.65] as Point))])) as Record<Part,Point[]>
 const delays:Record<Part,number>={head:7.65,torso:7.8,frontLeg:7.9,backLeg:7.95,frontArm:8.0,backArm:8.1}
-export function walkPhase(t:number):Phase{const scene=walkSceneTime(t);return scene<3.8?'walk':scene<5.7?'coffee':scene<7.65?'pause':scene<10.2?'become':'nillu'}
-export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageElement,width:number,height:number,dpr:number){
+export function paintWalk(ctx:CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D,t:number,logo:CanvasImageSource,width:number,height:number,dpr:number){
  t=walkSceneTime(t)
  const scale=Math.min(width/(width<600?650:900),height/650)
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height)
@@ -150,8 +136,13 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
   ctx.translate(0,-113);ctx.rotate(headAngle(pt));ctx.translate(0,113)
   // A light face inset makes the eye and toothbrush moustache legible in profile.
   ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(4,-153);ctx.bezierCurveTo(15,-157,20,-150,18,-144);ctx.lineTo(23,-138);ctx.lineTo(18,-135);ctx.lineTo(19,-130);ctx.quadraticCurveTo(16,-122,9,-123);ctx.lineTo(4,-130);ctx.closePath();ctx.fill()
-  ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.ellipse(15,-144,1.6,1.9,0,0,Math.PI*2);ctx.fill();ctx.fillRect(14,-134,6,4)
-  if(pt>6.55){ctx.strokeStyle='#0a0a0a';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(12,-127);ctx.quadraticCurveTo(16,-124,19,-128);ctx.stroke()}
+  ctx.fillStyle='#0a0a0a';ctx.strokeStyle='#0a0a0a';ctx.lineWidth=1.8;ctx.lineCap='round'
+  if(pt>6.55){
+   // A happy eye and a fuller smile remain readable at phone scale after the sip.
+   ctx.beginPath();ctx.moveTo(12,-143);ctx.quadraticCurveTo(15,-147,18,-143);ctx.stroke()
+   ctx.beginPath();ctx.moveTo(11,-129);ctx.quadraticCurveTo(16,-120,20,-129);ctx.stroke()
+  }else{ctx.beginPath();ctx.ellipse(15,-144,1.6,1.9,0,0,Math.PI*2);ctx.fill()}
+  ctx.fillRect(14,-134,6,4)
   ctx.strokeStyle='#777';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-22,-165);ctx.quadraticCurveTo(-3,-162,17,-165);ctx.stroke()
   ctx.restore()
  }
@@ -177,5 +168,5 @@ export function paintWalk(ctx:CanvasRenderingContext2D,t:number,logo:HTMLImageEl
   ctx.save();ctx.globalAlpha=heart.opacity*.85;ctx.fillStyle='#0a0a0a';ctx.translate(heart.x,heart.y);ctx.rotate(heart.angle);ctx.scale(heart.size,heart.size)
   ctx.beginPath();ctx.moveTo(0,.48);ctx.bezierCurveTo(-.14,.32,-.55,.03,-.48,-.23);ctx.bezierCurveTo(-.41,-.52,-.12,-.48,0,-.25);ctx.bezierCurveTo(.12,-.48,.41,-.52,.48,-.23);ctx.bezierCurveTo(.55,.03,.14,.32,0,.48);ctx.closePath();ctx.fill();ctx.restore()
  }
- if(t>10.0){ctx.save();ctx.globalAlpha=ease((t-10.0)/.45);ctx.drawImage(logo,logoBox.x,logoBox.y,logoBox.width,logoBox.height);ctx.font='500 12px sans-serif';ctx.fillText('™',logoBox.x+logoBox.width+6,logoBox.y+12);ctx.restore()}
+ if(t>10.0){ctx.save();ctx.globalAlpha=ease((t-10.0)/.45);ctx.drawImage(logo,logoBox.x,logoBox.y,logoBox.width,logoBox.height);ctx.fillStyle='#0a0a0a';ctx.font='600 28px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('™',logoBox.x+logoBox.width+9,logoBox.y+2);ctx.restore()}
 }

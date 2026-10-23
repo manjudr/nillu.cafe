@@ -3,29 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nillu Cafe — A place worth pausing for.</title>
-    <meta
-      name="description"
-      content="Nillu Cafe is opening soon in HSR Layout, Bengaluru. Discover coffee, fresh juices, smoothie bowls, quick snacks, desserts and custom cakes."
-    />
+    <link rel="preload" href="/src/assets/fonts/manrope-normal-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/manrope-normal-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/fraunces-italic-400.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#FFFFFF" />
-    <link rel="icon" type="image/png" href="/icon.png" />
-    <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="icon" href="/favicon.ico?v=2" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
     <link rel="canonical" href="https://nillu.cafe/" />
 
-    <meta property="og:type" content="restaurant.restaurant" />
-    <meta property="og:site_name" content="Nillu Café" />
-    <meta property="og:title" content="Nillu Cafe — A place worth pausing for." />
-    <meta
-      property="og:description"
-      content="Opening soon in HSR Layout, Bengaluru. Coffee, fresh juices, smoothie bowls, bites and cakes. Discover Nillu Cafe."
-    />
+    <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nillu.cafe/" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="twitter:card" content="summary_large_image" />
 
   </head>
   <body>
     <div id="root"></div>
+    <noscript><style>
+      #root .page-reveal,#root [style*="opacity:0"]{opacity:1!important;transform:none!important}
+      .coffee-demo,.juice-demo,.finish-demo{height:auto!important}
+      .demo-sticky{position:relative!important;min-height:650px}
+      .scene-placeholder{display:none!important}
+      .scene-fallback{visibility:visible!important}
+      .walk-stage canvas,.demo-canvas canvas,.site-menu-toggle{display:none}
+      .walk-stage{background:url(/brand/nillu-logo.png) center/auto 75% no-repeat}
+      .site-header nav{display:flex!important;position:static!important;flex-direction:row;flex-wrap:wrap;gap:8px;font-size:10px;padding:0;box-shadow:none;border:0}
+      .site-header nav a{padding:4px;min-height:0;border:0}
+    </style></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
