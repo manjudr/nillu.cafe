@@ -1,0 +1,1 @@
+var e=`/assets/logo-ink-Bs8-Kgrs.png`;export{e as t};

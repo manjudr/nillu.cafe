@@ -1,0 +1,1 @@
+import{a as e,n as t}from"./jsx-runtime-Wy9s6hX0.js";var n=e(t(),1),r=`(prefers-reduced-motion: reduce)`,i=e=>{let t=window.matchMedia(r);return t.addEventListener(`change`,e),()=>t.removeEventListener(`change`,e)},a=()=>window.matchMedia(r).matches,o=()=>!1;function s(){return(0,n.useSyncExternalStore)(i,a,o)}export{s as t};
