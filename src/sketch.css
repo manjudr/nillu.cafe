@@ -93,3 +93,13 @@
 .visit-days,.walk-support{color:var(--copy-ink)}
 .social-links a,.visit-address a{border-color:var(--control-rule)}
 .sketch-room img{aspect-ratio:1400 / 933;object-fit:cover}
+
+/* Instagram: a scannable desktop card and a direct link on phones. */
+.visit-instagram{display:grid;grid-template-columns:minmax(0,1fr) 184px;gap:24px;align-items:center;margin-top:18px}
+.visit-instagram .social-links{margin-top:0;gap:16px}
+.instagram-handle{font-size:12px;line-height:1.8;color:var(--copy-ink);margin-top:8px}
+.instagram-qr{margin:0;min-width:0;text-align:center}
+.instagram-qr>a{display:block;border:0;background:#fff;padding:0;min-height:0}
+.instagram-qr img{display:block;width:100%;height:auto}
+.instagram-qr figcaption{font-size:10px;line-height:1.8;margin-top:8px;color:var(--copy-ink)}
+@media(max-width:640px){.visit-instagram{display:block;margin-top:14px}.instagram-qr{display:none}}
