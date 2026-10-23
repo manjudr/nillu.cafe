@@ -7,6 +7,7 @@ import logo from './assets/logo-small.webp'
 import SiteHeader from './components/SiteHeader'
 import StoryWord from './components/StoryWord'
 import Visit from './components/Visit'
+import { VISIT } from './data/visit'
 import sketchRoom from './assets/room/nillu-2d-concept-v1.webp'
 import sketchRoomMobile from './assets/room/nillu-2d-concept-v1-mobile.webp'
 
@@ -36,8 +37,12 @@ export default function App() {
    <section className="hospitality-section" id="hospitality"><Reveal><span className="kicker">THE NILLU WAY</span><h2>Good food brings you in.<br/><em>A warm welcome makes you stay.</em></h2><p className="hospitality-lead">Come on your own or bring someone along. We want Nillu to be a place you feel comfortable coming back to.</p><div className="service-grid"><article><h3>A quiet cup.</h3><p>Have a coffee, enjoy a snack, and take some time for yourself.</p></article><article><h3>A shared table.</h3><p>Meet a friend over coffee and order something to share.</p></article><article><h3>A little celebration.</h3><p>Mark a birthday or share some good news over cake.</p></article></div></Reveal></section>
    <section className="care-section" id="care"><Reveal><span className="kicker">BEHIND THE WELCOME</span><h2>Good food.<br/>Thoughtful care.</h2><p className="care-intro">Good food and a friendly welcome matter to us. So does keeping the café clean.</p><div className="care-grid">{[['01','Quality','We care about flavour and getting your order right.'],['02','Hygiene','Clean workspaces, careful food handling, and a tidy place to sit.'],['03','Hospitality','A friendly hello, help when you need it, and room to enjoy your visit.']].map(([n,title,copy])=><article key={n}><span>{n} /</span><h3>{title}</h3><p>{copy}</p></article>)}</div></Reveal></section>
    <Visit/>
-   <section className="closing" id="pause"><Reveal><span className="kicker">COFFEE. FOOD. A WARM WELCOME.</span><p lang="kn" className="regional-word">ಮತ್ತೆ ಬನ್ನಿ</p><h2>Come for a coffee.<br/><em>Stay for your own reasons.</em></h2><a href="#top" className="closing-link">Back to the beginning <span>↑</span></a></Reveal></section>
+
+   <section className="closing" id="pause"><Reveal><span className="kicker">COFFEE. FOOD. A WARM WELCOME.</span><p lang="kn" className="regional-word">ಮತ್ತೆ ಬನ್ನಿ</p><h2>Come for a coffee.<br/><em>Stay for your own reasons.</em></h2><a href="#top" className="closing-link">Back to the beginning <span aria-hidden="true">↑</span></a></Reveal></section>
   </main>
-  <footer className="site-footer"><a href="#top"><img src={logo} alt="Nillu Cafe" width={1304} height={1148}/></a><p>STEP INTO A SKETCH. MAKE A REAL MOMENT.</p><span>© {new Date().getFullYear()} Nillu Cafe</span><small>Food images are illustrations. What we serve may look different.</small></footer>
+  <footer className="site-footer" id="footer">
+   <div className="footer-main"><div className="footer-identity"><a href="#top" className="footer-brand" aria-label="Nillu Cafe home"><img src={logo} alt="Nillu Cafe" width={1304} height={1148} loading="lazy" decoding="async"/><sup className="footer-trademark" aria-hidden="true">™</sup></a><p>HSR Layout, Bengaluru<span>Opening soon</span></p></div><nav className="footer-nav" aria-label="Footer links">{VISIT.instagramUrl&&<a href={VISIT.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a>}<a href="#top">Back to top <span aria-hidden="true">↑</span></a></nav></div>
+   <div className="footer-bottom"><span>© {new Date().getFullYear()} Nillu Cafe</span><small>Food images are illustrations. What we serve may look different.</small></div>
+  </footer>
  </>
 }
