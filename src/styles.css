@@ -133,8 +133,8 @@ body{font-weight:400}a{text-decoration:none}section[id]{scroll-margin-top:90px}.
 /* Simple editorial fades do not require the scene animation runtime. */
 .page-reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
 .page-reveal.is-visible{opacity:1;transform:none}
-.walk-copy-enter{animation:walk-copy-enter .45s both}
-@keyframes walk-copy-enter{from{transform:translateY(12px)}to{transform:none}}
+.walk-copy-enter{animation:walk-copy-enter .9s ease-in-out both}
+@keyframes walk-copy-enter{0%,12%{opacity:0}100%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.page-reveal{opacity:1;transform:none;transition:none}.walk-copy-enter{animation:none}}
 
 /* A studio placeholder stays white until the live scene is ready. */

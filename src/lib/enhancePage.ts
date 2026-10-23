@@ -48,16 +48,60 @@ export function enhancePage() {
   const title = document.getElementById('walk-title')!
   const caption = document.querySelector('.walk-support')!
   const kicker = document.querySelector('.walk-kicker')!
-  let phase = 'walk'
-  startWalkPlayer(canvas, reduced, next => {
-    if (next === phase) return
-    phase = next
+  let phase: keyof typeof WALK_STORY = 'walk'
+  let copyTransition: Animation | undefined
+  let transitionVersion = 0
+  let copyPause: number | undefined
+  const renderCopy = (next: keyof typeof WALK_STORY) => {
     title.classList.toggle('walk-title-sketch', next === 'walk' || next === 'nillu')
     const current = WALK_STORY[next], accent = document.createElement('em')
     accent.textContent = current.accent
     title.replaceChildren(document.createTextNode(current.title), document.createElement('br'), accent)
     caption.textContent = current.copy; kicker.textContent = current.number
-    if (!reduced.matches) copy.animate([{ transform: 'translateY(12px)' }, { transform: 'none' }], { duration: 450 })
+  }
+  startWalkPlayer(canvas, reduced, next => {
+    if (next === phase) return
+    phase = next
+    const version = ++transitionVersion
+    const opacity = getComputedStyle(copy).opacity
+    // Preserve the current opacity before cancelling, so no full-opacity frame flashes.
+    copy.style.opacity = opacity
+    copyTransition?.cancel()
+    window.clearTimeout(copyPause)
+    if (reduced.matches) { copy.style.opacity = '1'; renderCopy(next); return }
+    const outgoing = copy.animate([{ opacity }, { opacity: 0 }], {
+      duration: 200, easing: 'ease-in', fill: 'forwards',
+    })
+    copyTransition = outgoing
+    void outgoing.finished.then(() => {
+      if (version !== transitionVersion) return
+      copy.style.opacity = '0'
+      outgoing.cancel()
+      // Hold a clear frame between messages. Only one text block exists.
+      copyPause = window.setTimeout(() => {
+        if (version !== transitionVersion) return
+        renderCopy(next)
+        if (reduced.matches) { copy.style.opacity = '1'; return }
+        const incoming = copy.animate([{ opacity: 0 }, { opacity: 1 }], {
+          duration: 700, easing: 'ease-in-out', fill: 'forwards',
+        })
+        copyTransition = incoming
+        void incoming.finished.then(() => {
+          if (version !== transitionVersion) return
+          copy.style.opacity = '1'
+          incoming.cancel()
+          copyTransition = undefined
+        }, () => {})
+      }, 120)
+    }, () => { /* A newer phase safely supersedes this transition. */ })
+  })
+  reduced.addEventListener('change', () => {
+    if (!reduced.matches) return
+    ++transitionVersion
+    window.clearTimeout(copyPause)
+    copy.style.opacity = '1'
+    copyTransition?.cancel()
+    renderCopy(phase)
   })
 
   const onceNear = (selector: string, margin: string, enhance: (element: HTMLElement) => Promise<void>) => {
