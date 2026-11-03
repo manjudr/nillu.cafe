@@ -4,10 +4,8 @@ import { VISIT } from './visit.ts'
 export const SITE = {
   url: 'https://nillu.cafe/',
   name: 'Nillu Cafe',
-  // "Bangalore" is carried alongside "Bengaluru" because both spellings are in
-  // common search and assistant use; the official name leads in body copy.
-  title: 'Nillu Cafe | 2D Cafe in HSR Layout, Bangalore | Opening Soon',
-  description: 'Nillu Cafe is opening soon in Sector 2, HSR Layout, Bangalore. A 2D cafe with coffee, fresh juices, smoothie bowls, snacks, desserts and cakes.',
+  title: 'Nillu Cafe | 2D Café in HSR Layout, Bengaluru',
+  description: 'Nillu Cafe is opening soon in HSR Layout, Bengaluru. Discover a café designed like a drawing, with coffee, fresh juices, smoothie bowls, snacks and desserts.',
   image: 'https://nillu.cafe/social-preview.png',
   imageAlt: 'Nillu Cafe. A 2D cafe opening soon in HSR Layout, Bengaluru. Step into a sketch. Make a real moment.',
 }

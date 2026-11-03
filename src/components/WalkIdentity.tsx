@@ -1,3 +1,4 @@
+import { revealTagline } from '../lib/revealTagline'
 import { WALK_STORY } from '../data/walkStory'
 import { useReducedMotion } from '../lib/useReducedMotion'
 import { useEffect, useRef, useState } from 'react'
@@ -34,6 +35,8 @@ export default function WalkIdentity({embedded=false}:{embedded?:boolean}){
   if(playing&&!reduced)frame=requestAnimationFrame(tick)
   return()=>{cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect()}
  },[ready,playing,run,reduced,embedded])
+ const tagline=useRef<HTMLParagraphElement>(null)
+ useEffect(()=>{if(tagline.current)return revealTagline(tagline.current,phase==='nillu',reduced)},[phase,reduced])
  const seek=(seconds:number)=>{elapsed.current=seconds;setProgress(seconds/WALK_DURATION);setPhase(walkPhase(seconds));setPlaying(false);setRun(v=>v+1)}
  const replay=()=>{elapsed.current=0;setProgress(0);setPhase('walk');setRun(v=>v+1);setPlaying(true)}
  const toggle=()=>{if(elapsed.current>=WALK_DURATION)replay();else setPlaying(p=>!p)}
@@ -44,7 +47,8 @@ export default function WalkIdentity({embedded=false}:{embedded?:boolean}){
   <section className="walk-story" aria-labelledby={embedded?'site-title':'walk-title'}>
    {embedded&&<h1 id="site-title" className="sr-only">Nillu Cafe in HSR Layout, Bengaluru. A 2D cafe opening soon.</h1>}
    <div className="walk-copy"><p className="walk-location">Opening soon.<span>A 2D café · HSR Layout, Bengaluru</span></p><div key={phase} className={phase==='walk'?'':'walk-copy-enter'}><span className="walk-kicker">{current.number}</span><Heading id="walk-title" className={`walk-title ${phase==='walk'||phase==='nillu'?'walk-title-sketch':''}`}>{current.title}<br/><em>{current.accent}</em></Heading><p className="walk-support">{current.copy}</p></div></div>
-   <div className="walk-stage" role="img" aria-label="A Chaplin-inspired character in a bowler hat, fitted jacket, and oversized shoes walks in, catches a branded takeaway coffee falling from above, takes a sip, smiles as a few hearts rise and fade, pauses, and reshapes into the original Nillu Cafe logo.">{failed?<img className="walk-fallback" src={logo} alt="Nillu Cafe"/>:<canvas ref={canvas}/>}</div>
+   <div className="walk-stage" role="img" aria-label="A Chaplin-inspired character in a bowler hat, fitted jacket, and oversized shoes walks in, catches a branded takeaway coffee falling from above, takes a sip, smiles as a few hearts rise and fade, pauses, and reshapes into the original Nillu Cafe logo.">{failed?<img className="walk-fallback" src={logo} alt="Nillu Cafe"/>:<canvas ref={canvas}/>}
+   <p ref={tagline} className="walk-tagline" aria-label="Stay a little."><span aria-hidden="true"/></p></div>
    {!embedded&&<div className="walk-controls"><div className="walk-playback"><button className="walk-play" onClick={toggle} disabled={!ready||reduced} aria-label={playing?'Pause animation':elapsed.current>=WALK_DURATION?'Replay animation':'Play animation'}>{playing?'Ⅱ':'▷'}</button><button className="walk-replay" onClick={replay} disabled={!ready||reduced}>Watch again <span aria-hidden="true">↺</span></button></div><div className="walk-chapters" aria-label="Animation chapters">{(['walk','coffee','pause','become','nillu'] as const).map(p=><button data-seek={p} key={p} onClick={()=>seek(WALK_STOPS[p])} className={phase===p?'active':''} aria-pressed={phase===p}>{p==='become'?'Transform':p==='nillu'?'Nillu':p==='walk'?'Walk':p==='coffee'?'Coffee':'Pause'}</button>)}</div>{embedded?<a className="walk-signoff walk-explore" href="#explore">Explore food & drinks ↓</a>:<span className="walk-signoff">PAUSE. STAY. ENJOY.</span>}<label className="walk-scrubber"><span className="sr-only">Animation progress</span><input type="range" min="0" max="1" step=".001" value={progress} onChange={e=>seek(Number(e.target.value)*WALK_DURATION)} aria-valuetext={`${Math.round(progress*100)} percent, ${phase}`}/></label></div>}
    {embedded&&<a className="walk-discover" href="#explore">Explore food & drinks <span aria-hidden="true">↓</span></a>}
   </section>

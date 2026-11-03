@@ -1,3 +1,4 @@
+import { revealTagline } from './revealTagline'
 import { WALK_STORY } from '../data/walkStory'
 import { startWalkPlayer } from './walkPlayer'
 
@@ -48,6 +49,8 @@ export function enhancePage() {
   const title = document.getElementById('walk-title')!
   const caption = document.querySelector('.walk-support')!
   const kicker = document.querySelector('.walk-kicker')!
+  const tagline = document.querySelector<HTMLElement>('.walk-tagline')!
+  let stopTagline: (() => void) | undefined
   let phase: keyof typeof WALK_STORY = 'walk'
   let copyTransition: Animation | undefined
   let transitionVersion = 0
@@ -60,6 +63,10 @@ export function enhancePage() {
     caption.textContent = current.copy; kicker.textContent = current.number
   }
   startWalkPlayer(canvas, reduced, next => {
+    if(next !== phase || reduced.matches) {
+      stopTagline?.()
+      stopTagline = revealTagline(tagline, next === 'nillu', reduced.matches)
+    }
     if (next === phase) return
     phase = next
     const version = ++transitionVersion
@@ -97,6 +104,8 @@ export function enhancePage() {
   })
   reduced.addEventListener('change', () => {
     if (!reduced.matches) return
+    stopTagline?.()
+    stopTagline = revealTagline(tagline, phase === 'nillu', true)
     ++transitionVersion
     window.clearTimeout(copyPause)
     copy.style.opacity = '1'
