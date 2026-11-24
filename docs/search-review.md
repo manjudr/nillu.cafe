@@ -24,6 +24,10 @@ A public web search for the brand and location surfaced a separate Nerlu Cafe in
 - The responsive suite checked all eleven sections at seven screen sizes, mobile navigation and all five hero phases. Mobile startup checks verified deferred scene loading and worker rendering. Visual review covered the hero, cookie and Visit sections at 390px and 1440px. PageSpeed Insights returned a quota error, so field Core Web Vitals are unverified. The build retains a size warning for the deferred 3D bundle.
 - scripts/check-seo.mjs verifies entity relationships and the featured items. scripts/check-juice.mjs reads the opening month in its Visit diagnostic. scripts/check-scenes.mjs checks the current compact food presentation. README.md and SEO-REVIEW.md point to this review.
 
+## Published review
+
+[Pages deployment 45447424363](https://github.com/manjudr/nillu.cafe/actions/runs/45447424363) published source 3a10c06 in release 146bc6f. The public homepage, robots.txt, sitemap.xml and social card matched the reviewed build byte for byte. The live browser SEO checks passed with JavaScript enabled, disabled and with reduced motion. The Schema.org validator fetched the published homepage and reported zero errors and zero warnings. Forward and reverse scroll checks passed for all four scenes at phone, tablet and desktop sizes.
+
 ## Google follow-up
 
 1. Inspect https://nillu.cafe/ in the verified Search Console property. Record crawl status, rendered HTML, selected canonical and indexing status. Check https://nillu.cafe/index.html as an alternate URL.
