@@ -9,10 +9,24 @@ try{
   await page.setViewport({width,height});await page.goto(process.env.URL??'http://127.0.0.1:5204/',{waitUntil:'networkidle0'});await page.$eval('#explore',el=>el.scrollIntoView({behavior:'instant'}));await page.waitForSelector('#explore[data-ready="true"]');await page.evaluate(()=>document.fonts.ready)
   for(const id of ['coffee-preview','juice-preview','bowl-preview','dessert-preview']){
    const labels=[];
+   const compact = await page.$eval('#explore', el => el.classList.contains('experience-short'));
    for(const progress of [.18,.55,.95,.18]){
-    await page.$eval(`#${id}`,(el,p)=>scrollTo({top:el.getBoundingClientRect().top+scrollY+p*(el.offsetHeight-innerHeight),behavior:'instant'}),progress);await new Promise(r=>setTimeout(r,800));const expected=progress===.95?4:((id==='coffee-preview'||id==='juice-preview')?(progress===.18?2:3):(progress===.18?1:2));await page.waitForFunction((id,chapter)=>document.querySelector(`#${id} .demo-copy`)?.dataset.chapter===String(chapter),{},id,expected);if(labels.length===3)await page.waitForFunction((id,label)=>document.querySelector(`#${id} h2`)?.innerText===label,{},id,labels[0]);labels.push(await page.$eval(`#${id} h2`,e=>e.innerText));if(capture&&progress!==.18)await page.screenshot({path:`shots/motion-${width}-${id}-${progress}.png`})
+    await page.$eval(`#${id}`, (el, p) => scrollTo({
+      top: el.getBoundingClientRect().top + scrollY + p * (el.offsetHeight - innerHeight),
+      behavior: 'instant',
+    }), progress)
+    // Both layouts animate the scroll indicator. Compact panels keep the final caption.
+    await page.waitForFunction((id, progress) => {
+      const track = document.querySelector(`#${id} .demo-track`)
+      return Math.abs(parseFloat(track.firstElementChild.style.width) / 100 - progress) < .03
+    }, {}, id, progress)
+    const early = progress === .18
+    const expected = compact || progress === .95 ? 4 : ['coffee-preview','juice-preview'].includes(id) ? (early ? 2 : 3) : (early ? 1 : 2)
+    await page.waitForFunction((id, chapter) => document.querySelector(`#${id} .demo-copy`)?.dataset.chapter === String(chapter), {}, id, expected)
+    labels.push(await page.$eval(`#${id} h2`, el => el.innerText))
+    if(capture && progress !== .18) await page.screenshot({path:`shots/motion-${width}-${id}-${progress}.png`})
    }
-   assert.equal(labels[0],labels[3],`Reverse scroll ${id}`);assert.notEqual(labels[0],labels[2],`Scene advances ${id}`);assert.equal(await page.$$eval(`#${id} .demo-steps`,e=>e.length),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
+   assert.equal(labels[0],labels[3],`Reverse scroll ${id}`);if (compact) assert.equal(new Set(labels).size, 1, `Stable caption ${id}`); else assert.notEqual(labels[0],labels[2],`Scene advances ${id}`);assert.equal(await page.$$eval(`#${id} .demo-steps`,e=>e.length),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
   }
   console.log(`Motion and reverse scroll verified at ${width}`)
  }

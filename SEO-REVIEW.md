@@ -1,5 +1,7 @@
 # Nillu Cafe: search and AI discovery
 
+The [24 November 2026 review](docs/search-review.md) supersedes the business status, search metadata, and entity identifiers in this historical report.
+
 Reviewed 23 October 2026. Business status: opening soon in HSR Layout, Bengaluru.
 Google Business Profile is not created yet, per the owner. No online ordering,
 reservation support, or enquiry forms are offered by this website.

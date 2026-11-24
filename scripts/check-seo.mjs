@@ -39,6 +39,10 @@ try {
       canonical: document.querySelector('link[rel="canonical"]')?.href,
       headings: [...document.querySelectorAll('h1')].map(el => el.textContent),
       schema: JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent),
+      graphCount: document.querySelectorAll('script[type="application/ld+json"]').length,
+      missingAlt: document.querySelectorAll('img:not([alt])').length,
+      brokenAnchors: [...document.querySelectorAll('a[href^="#"]')].filter(a => !document.getElementById(a.hash.slice(1))).map(a => a.hash),
+      featured: [...document.querySelectorAll('.experience-nav a')].slice(0, 2).map(a => a.textContent),
       storyVisible: getComputedStyle(document.querySelector('#about>div')).opacity,
       brokenImages: [...document.images].filter(i => !i.loading && (!i.complete || !i.naturalWidth)).map(i=>i.src),
       overflow: document.documentElement.scrollWidth > innerWidth,
@@ -48,7 +52,29 @@ try {
     assert.equal(facts.canonical, 'https://nillu.cafe/')
     assert.equal(facts.headings.length, 1)
     assert(facts.headings[0].includes('Nillu Cafe in HSR Layout'))
-    assert.equal(facts.schema['@graph'].length, 3)
+    assert.equal(facts.graphCount, 1)
+    const nodes = facts.schema['@graph']
+    const entity = (type, fragment) => {
+      const matches = nodes.filter(node => node['@type'] === type)
+      assert.equal(matches.length, 1, type)
+      assert.equal(matches[0]['@id'], facts.canonical + fragment)
+      return matches[0]
+    }
+    const organization = entity('Organization', '#organization')
+    const cafe = entity('CafeOrCoffeeShop', '#cafe')
+    const site = entity('WebSite', '#website')
+    const home = entity('WebPage', '#webpage')
+    assert.equal(site.publisher['@id'], organization['@id'])
+    assert.equal(cafe.parentOrganization['@id'], organization['@id'])
+    assert.equal(home.about['@id'], cafe['@id'])
+    assert.equal(home.isPartOf['@id'], site['@id'])
+    assert(organization.sameAs.includes('https://www.instagram.com/nillucafe/'))
+    assert.equal(cafe.address.addressLocality, 'Bengaluru')
+    assert.equal(cafe.address.postalCode, '560102')
+    assert.deepEqual(facts.featured, ['Smoothie bowls', 'Fresh hot cookies'])
+    assert.match(facts.title, /smoothie bowls & fresh hot cookies/i)
+    assert.equal(facts.missingAlt, 0)
+    assert.deepEqual(facts.brokenAnchors, [])
     assert(!JSON.stringify(facts.schema).includes('openingHours'), 'Planned hours must not become operating hours')
     assert.deepEqual(facts.brokenImages, [])
     assert.equal(facts.overflow, false)
@@ -63,6 +89,7 @@ try {
     if (javascript) {
       await page.goto(`${url}?preview=walk`, {waitUntil:'networkidle0'})
       assert(await page.$('meta[name="robots"][content="noindex, follow"]'))
+      assert.equal(await page.$$eval('meta[name="robots"]', els => els.length), 1)
       assert.equal(await page.$$eval('h1', els => els.length), 1)
       await page.goto(`${url}?preview=coffee`, {waitUntil:'networkidle0'})
       await page.waitForSelector('#dessert-preview')
@@ -79,4 +106,7 @@ try {
   assert(Object.keys(manifest).length > 0)
   await writeFile('shots/seo-checks.json',JSON.stringify(results,null,2))
   console.log(JSON.stringify(results,null,2))
-} finally { await browser.close() }
+} finally {
+  const shutdown = setTimeout(() => browser.process()?.kill('SIGKILL'), 5000)
+  try { await browser.close() } finally { clearTimeout(shutdown) }
+}

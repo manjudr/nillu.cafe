@@ -6,10 +6,7 @@ const root = document.getElementById('root')!
 const preview = new URLSearchParams(window.location.search).has('preview')
 if (preview) {
   // Studies are alternate views of the home URL, not separate search pages.
-  const robots = document.createElement('meta')
-  robots.name = 'robots'
-  robots.content = 'noindex, follow'
-  document.head.append(robots)
+  document.querySelector<HTMLMetaElement>('meta[name="robots"]')!.content = 'noindex, follow'
 }
 const app = (
   <StrictMode>

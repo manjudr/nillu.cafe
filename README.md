@@ -32,7 +32,7 @@ Scroll backward to reverse each sequence. The category navigation and Next links
 
 Food imagery and 3D scenes illustrate categories, not actual product photography. The supplied logo is retained. Generated images are saved in `src/assets/product/` as `coffee-v2.webp`, `juice-v2.webp`, `bowl-v2.webp` and `dessert-v2.webp`. Built-in image generation was used. Prompt set: white seamless studio backdrop, premium food editorial lighting, natural textures, no lettering or logos; subjects were a cappuccino with falling beans, orange juice pouring into a glass, a berry smoothie bowl with fruit toppings, and tiramisu with a lifted forkful.
 
-The cafe is opening soon in HSR Layout, Bengaluru. Hours are labelled planned. The owner-supplied Instagram profile is linked. Full address, opening date and other unconfirmed details are not invented. The current 2D-cafe release is published at https://nillu.cafe/.
+Nillu Cafe plans to open in December 2026 in Sector 2, HSR Layout, Bengaluru. Smoothie bowls and fresh hot cookies are its specialties. The Visit section gives the confirmed address and official Instagram profile.
 
 ## Visual verification
 
@@ -63,10 +63,7 @@ Vite dev server still renders on the client. Search facts and entity markup live
 in `src/data/site.ts`, and Vite injects the metadata into the document head.
 Crawler discovery files and social assets live in `public/`.
 
-See `SEO-REVIEW.md` for research, verified-fact boundaries, the later Business
-Profile/Search Console steps, and validation. Run `node scripts/check-seo.mjs`
-against a production preview on port 5180 (override with `URL`). The site remains
-opening soon; planned hours are not published as current operating-hours schema.
+See [the November search audit](docs/search-review.md) for the business facts, implementation review and Search Console checks. Run `node scripts/check-seo.mjs` against a production preview on port 5180 (override with `URL`).
 
 ## Mobile loading and icons
 
